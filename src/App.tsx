@@ -1,28 +1,62 @@
 import React from 'react';
 import TodoList from './TodoList';
-import './App.css';
+import {v1} from 'uuid';
+import './main.scss';
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
 
+export type FilterValuesType = 'all' | 'active' | 'completed';
+
 function App() {
     const [tasks, setTasks] = React.useState([
-        {id: 1, title: 'HTML & CSS', isDone: true},
-        {id: 2, title: 'JS / ES6', isDone: true},
-        {id: 3, title: 'React', isDone: false}
+        {id: v1(), title: 'HTML & CSS', isDone: true},
+        {id: v1(), title: 'JS / ES6', isDone: true},
+        {id: v1(), title: 'React', isDone: false}
     ])
 
-    const removeTask = (id: number) => {
+    const removeTask = (id: string) => {
         const filteredTasks = tasks.filter(t => t.id !== id)
         setTasks(filteredTasks);
     }
 
+    const addTask = (title: string) => {
+        const newTask: TaskType = {
+            id: v1(),
+            title: title,
+            isDone: false
+        }
+
+        setTasks([newTask, ...tasks])
+    }
+
+    const [filter, setFilter] = React.useState<FilterValuesType>('all');
+
+    const changeFilter = (filter: FilterValuesType) => {
+        setFilter(filter);
+    }
+
+    let tasksForTodoList;
+
+    switch(filter) {
+        case 'active':
+        tasksForTodoList = tasks.filter(t => t.isDone === false)
+        break;
+
+        case 'completed':
+        tasksForTodoList = tasks.filter(t => t.isDone === true)
+        break;
+
+        default:
+        tasksForTodoList = tasks
+    }
+
     return (
         <div className="App">
-            <TodoList title='What to learn' tasks={tasks} removeTask={removeTask}/>
+            <TodoList title='What to learn' tasks={tasksForTodoList} removeTask={removeTask} addTask={addTask} changeFilter={changeFilter}/>
         </div>
     )
 }

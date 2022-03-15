@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import {TaskType} from './App'
+import {TaskType, FilterValuesType} from './App'
 
 type TaskListPropsType = {
     tasks: Array<TaskType>
-    removeTask: (id: number) => void
+    removeTask: (id: string) => void
+    addTask: (title: string) => void
 }
-
 
 const TaskList: FC<TaskListPropsType> = ({tasks, removeTask}) => {
 
