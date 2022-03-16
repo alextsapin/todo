@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {TaskType, FilterValuesType} from './App'
+import TodoListButton from './TodoListButton';
 
 type TaskListPropsType = {
     tasks: Array<TaskType>
@@ -14,7 +15,8 @@ const TaskList: FC<TaskListPropsType> = ({tasks, removeTask}) => {
             <li key={t.id}>
                 <input type="checkbox" checked={t.isDone}/> 
                 <span>{t.title}</span>    
-                <button onClick={() => removeTask(t.id)}>x</button>
+                <TodoListButton title='x' callBack={() => removeTask(t.id)}/>
+
             </li>
         )
     })

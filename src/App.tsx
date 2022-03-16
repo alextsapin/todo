@@ -33,7 +33,7 @@ function App() {
         setTasks([newTask, ...tasks])
     }
 
-    const [filter, setFilter] = React.useState<FilterValuesType>('all');
+    const [filter, setFilter] = React.useState('');
 
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter);

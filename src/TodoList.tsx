@@ -14,7 +14,6 @@ type TodoListPropsType = {
 }
 
 const TodoList = (props: TodoListPropsType) => {
-    console.log('Todo')
     const [title, setTitle] = React.useState('');
     
     const addTask = () => {
@@ -26,22 +25,20 @@ const TodoList = (props: TodoListPropsType) => {
         <div>
             <TodoListHeader title={props.title}/>
             <div>
-                <input 
-                    value={title} 
-                    onChange={e => setTitle(e.currentTarget.value)}
+                <input value={title} onChange={e => setTitle(e.currentTarget.value)}
                     onKeyPress={(e) => {
                         if(e.key === 'Enter') {
                             addTask()
                         }
                     }}
                 />
-                <button onClick={addTask}>+</button>
+                <TodoListButton title='+' callBack={addTask}/>
             </div>
             <TaskList tasks={props.tasks} removeTask={props.removeTask} addTask={props.addTask}/>
             <div>
-                <TodoListButton title='All' changeFilter={() => props.changeFilter('all')}/>
-                <TodoListButton title='Active' changeFilter={() => props.changeFilter('active')}/>
-                <TodoListButton title='Completed' changeFilter={() => props.changeFilter('completed')}/>
+                <TodoListButton title='All' callBack={() => props.changeFilter('all')}/>
+                <TodoListButton title='Active' callBack={() => props.changeFilter('active')}/>
+                <TodoListButton title='Completed' callBack={() => props.changeFilter('completed')}/>
             </div>
         </div>
     )

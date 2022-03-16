@@ -1,13 +1,19 @@
 import React from 'react';
-import {TaskType, FilterValuesType} from './App'
 
 type TodoListButtonPropsType = {
     title: string
-    changeFilter: () => void
+    callBack: () => void
 }
 
 const TodoListButton = (props: TodoListButtonPropsType) => {
-    return <button onClick={props.changeFilter}>{props.title}</button>
+
+    const onClickHandler = () => {
+        props.callBack()
+    }
+    
+    return (
+        <button onClick={onClickHandler}>{props.title}</button>
+    )
 }
 
 export default TodoListButton;
