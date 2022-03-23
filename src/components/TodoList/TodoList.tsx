@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from './components/Button/Button';
-import TaskList from './components/TaskList/TaskList';
-import {TaskType, FilterValuesType} from './App';
+import Button from '../Button/Button';
+import TaskList from '../TaskList/TaskList';
+import {TaskType, FilterValuesType} from '../../App';
 
 type TodoListPropsType = {
     tasks: Array<TaskType>

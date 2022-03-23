@@ -1,7 +1,7 @@
 import React from 'react';
-import TodoList from './TodoList';
+import TodoList from './components/TodoList/TodoList';
 import {v1} from 'uuid';
-import './main.css';
+import './main.scss';
 
 export type TaskType = {
     id: string
