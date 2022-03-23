@@ -12,11 +12,14 @@ export type TaskType = {
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 function App() {
+
     const [tasks, setTasks] = React.useState([
         {id: v1(), title: 'HTML & CSS', isDone: true},
         {id: v1(), title: 'JS / ES6', isDone: true},
         {id: v1(), title: 'React', isDone: false}
     ])
+
+    const [filter, setFilter] = React.useState('all');
 
     const removeTask = (id: string) => {
         const filteredTasks = tasks.filter(t => t.id !== id)
@@ -33,7 +36,10 @@ function App() {
         setTasks([newTask, ...tasks])
     }
 
-    const [filter, setFilter] = React.useState('');
+    const changeStatus = (id: string, isDone: boolean) => {
+        const updateTasks = tasks.map(t => t.id === id ? {...t, isDone: isDone} : t);
+        setTasks(updateTasks);
+    }
 
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter);
@@ -55,8 +61,15 @@ function App() {
     }
 
     return (
-        <div className="App">
-            <TodoList title='What to learn' tasks={tasksForTodoList} removeTask={removeTask} addTask={addTask} changeFilter={changeFilter}/>
+        <div className="container">
+            <TodoList 
+                title='What to learn' 
+                filter={filter} tasks={tasksForTodoList} 
+                removeTask={removeTask} 
+                addTask={addTask} 
+                changeFilter={changeFilter} 
+                changeStatus={changeStatus}
+            />
         </div>
     )
 }
