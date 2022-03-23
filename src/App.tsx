@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoList from './TodoList';
 import {v1} from 'uuid';
-import './main.scss';
+import './main.css';
 
 export type TaskType = {
     id: string
@@ -61,16 +61,13 @@ function App() {
     }
 
     return (
-        <div className="container">
-            <TodoList 
-                title='What to learn' 
-                filter={filter} tasks={tasksForTodoList} 
-                removeTask={removeTask} 
-                addTask={addTask} 
-                changeFilter={changeFilter} 
-                changeStatus={changeStatus}
-            />
-        </div>
+        <TodoList 
+            filter={filter} tasks={tasksForTodoList} 
+            removeTask={removeTask} 
+            addTask={addTask} 
+            changeFilter={changeFilter} 
+            changeStatus={changeStatus}
+        />
     )
 }
 

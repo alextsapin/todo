@@ -1,12 +1,9 @@
 import React from 'react';
-import {TaskType, FilterValuesType} from './App';
-
-import TodoListHeader from './TodoListHeader';
 import Button from './components/Button/Button';
 import TaskList from './components/TaskList/TaskList';
+import {TaskType, FilterValuesType} from './App';
 
 type TodoListPropsType = {
-    title: string
     tasks: Array<TaskType>
     removeTask: (id: string) => void
     addTask: (title: string) => void
@@ -32,20 +29,22 @@ const TodoList = (props: TodoListPropsType) => {
 
     const inputClass = error === '' ? 'form-control' : 'form-control is-invalid';
 
-    console.log(props)
-
     return (
-        <div>
-            <TodoListHeader title={props.title}/>
-            <div>
-                <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}
-                    onKeyPress={(e) => {
-                        if(e.key === 'Enter') {
-                            addTask()
-                        }
-                    }}
-                />
-                <Button title='+' callBack={addTask}/>
+        <div className="container">
+            <h1>What to learn</h1>
+            <div className="row g-3">
+                <div className="col-md-4">
+                    <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}
+                        onKeyPress={(e) => {
+                            if(e.key === 'Enter') {
+                                addTask()
+                            }
+                        }}
+                    />
+                </div>
+                <div className="col">
+                <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
+                </div>
             </div>
 
             <TaskList tasks={props.tasks} removeTask={props.removeTask} addTask={props.addTask} changeStatus={props.changeStatus}/>

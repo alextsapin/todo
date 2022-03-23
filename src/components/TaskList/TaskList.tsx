@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {TaskType, FilterValuesType} from '../../App'
+import {TaskType} from '../../App';
 import TodoListButton from '../Button/Button';
 
 type TaskListPropsType = {
