@@ -4,10 +4,11 @@ import TaskList from '../TaskList/TaskList';
 import {TaskType, FilterValuesType} from '../../App';
 
 type TodoListPropsType = {
+    todoListID: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
+    removeTask: (todolistID: string, id: string) => void
     addTask: (title: string) => void
-    changeFilter: (filter: FilterValuesType) => void
+    changeFilter: (todoListId: string, filter: FilterValuesType) => void
     changeStatus: (id: string, isDone: boolean) => void
     filter: string
 }
@@ -30,7 +31,7 @@ const TodoList = (props: TodoListPropsType) => {
     const inputClass = error === '' ? 'form-control' : 'form-control is-invalid';
 
     return (
-        <div className="container">
+        <div className="col-md-6">
             <h1>What to learn</h1>
             <div className="row g-3">
                 <div className="col-md-4">
@@ -43,28 +44,28 @@ const TodoList = (props: TodoListPropsType) => {
                     />
                 </div>
                 <div className="col">
-                <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
+                    <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
                 </div>
             </div>
 
-            <TaskList tasks={props.tasks} removeTask={props.removeTask} addTask={props.addTask} changeStatus={props.changeStatus}/>
+            <TaskList tasks={props.tasks} todoListID={props.todoListID} removeTask={props.removeTask} addTask={props.addTask} changeStatus={props.changeStatus}/>
 
             <div>
                 <Button 
                     title='All' 
-                    callBack={() => props.changeFilter('all')} 
+                    callBack={() => props.changeFilter(props.todoListID, 'all')} 
                     filterClass={props.filter === 'all' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
                 />
 
                 <Button 
                     title='Active' 
-                    callBack={() => props.changeFilter('active')} 
+                    callBack={() => props.changeFilter(props.todoListID, 'active')} 
                     filterClass={props.filter === 'active' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
                 />
 
                 <Button 
                     title='Completed' 
-                    callBack={() => props.changeFilter('completed')} 
+                    callBack={() => props.changeFilter(props.todoListID, 'completed')} 
                     filterClass={props.filter === 'completed' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
                 />
             </div>
