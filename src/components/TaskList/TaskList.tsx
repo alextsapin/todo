@@ -1,16 +1,21 @@
 import React, {FC} from 'react';
 import {TaskType} from '../../App';
 import TodoListButton from '../Button/Button';
+import EditableInput from '../EditableInput/EditableInput'
 
 type TaskListPropsType = {
     tasks: Array<TaskType>
     todoListID: string
     removeTask: (todoListID: string, id: string) => void
-    addTask: (title: string) => void
+    addTask: (todoListId: string, title: string) => void
     changeStatus: (id: string, isDone: boolean) => void
 }
 
 const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID}) => {
+
+    const setNewTitle = () => {
+
+    }
 
     const taskJSXElements = tasks.map(t => {
         return (
@@ -20,7 +25,7 @@ const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoL
                 </div>
                 
                 <div className="col-md-4 d-flex flex-column justify-content-center">
-                    <span>{t.title}</span>    
+                    <EditableInput title={t.title} setNewTitle={setNewTitle}/>
                 </div>
 
                 <div className="col-md-4">

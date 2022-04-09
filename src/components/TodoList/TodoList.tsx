@@ -7,9 +7,10 @@ type TodoListPropsType = {
     todoListID: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
-    addTask: (title: string) => void
+    addTask: (todoListID: string, title: string) => void
     changeFilter: (todoListId: string, filter: FilterValuesType) => void
     changeStatus: (id: string, isDone: boolean) => void
+    removeTodoList: (todoListId: string) => void
     filter: string
 }
 
@@ -20,7 +21,7 @@ const TodoList = (props: TodoListPropsType) => {
     const addTask = () => {
         const trimmedTitle = title.trim();
         if(trimmedTitle) {
-            props.addTask(trimmedTitle);
+            props.addTask(props.todoListID, trimmedTitle);
             setError('');
             setTitle('');
         } else {
@@ -30,9 +31,13 @@ const TodoList = (props: TodoListPropsType) => {
 
     const inputClass = error === '' ? 'form-control' : 'form-control is-invalid';
 
+    const removeTodoList = () => {
+        //setTodoLists(TodoList)
+    }
+
     return (
         <div className="col-md-6">
-            <h1>What to learn</h1>
+            <h1>What to learn</h1><button onClick={removeTodoList}>х</button>
             <div className="row g-3">
                 <div className="col-md-4">
                     <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}

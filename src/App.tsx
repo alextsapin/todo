@@ -1,6 +1,7 @@
 import React from 'react';
 import TodoList from './components/TodoList/TodoList';
 import {v1} from 'uuid';
+import Button from './components/Button/Button'
 import './main.scss';
 
 export type TaskType = {
@@ -17,23 +18,14 @@ type TodoListsType = {
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
-function App() {
+const App = () => {
 
-    /*let[todolists, setTodolists] = React.useState<Array<todolistsType>>([
-        {id:v1(), title:'What to learn', filter:'all'},
-        {id:v1(), title:'What to buy', filter:'all'},
-    ])
-    
-    const [tasks, setTasks] = React.useState([
-        {id: v1(), title: 'HTML & CSS', isDone: true},
-        {id: v1(), title: 'JS / ES6', isDone: true},
-        {id: v1(), title: 'React', isDone: false}
-    ])*/
+    const todolistID1 = v1();
+    const todolistID2 = v1();
 
-    let todolistID1=v1();
-    let todolistID2=v1();
+    let [todoList, setTodoList] = React.useState('');
 
-    let [todolists, setTodolists] = React.useState<Array<TodoListsType>>([
+    let [todoListBox, setTodoListBox] = React.useState<Array<TodoListsType>>([
         {id: todolistID1, title: 'What to learn', filter: 'all'},
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
@@ -47,11 +39,10 @@ function App() {
             {id: v1(), title: "GraphQL", isDone: false},
         ],
         [todolistID2]:[
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
+            {id: v1(), title: "Ryzen 7 5800X", isDone: true},
+            {id: v1(), title: "MSI GTX 3060", isDone: true},
+            {id: v1(), title: "GINZZU", isDone: false},
+            {id: v1(), title: "Black Fury 16GB", isDone: false}
         ]
     });
 
@@ -65,14 +56,14 @@ function App() {
         //setTasks(filteredTasks);
     }
 
-    const addTask = (title: string) => {
+    const addTask = (todolistID: string, title: string) => {
         const newTask: TaskType = {
             id: v1(),
             title: title,
             isDone: false
         }
 
-        //setTasks([newTask, ...tasks])
+        setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
     }
 
     const changeStatus = (id: string, isDone: boolean) => {
@@ -81,11 +72,29 @@ function App() {
     }
 
     const changeFilter = (todoListID: string, filter: FilterValuesType) => {
-        setTodolists(todolists.map(item => item.id === todoListID ? {...item, filter: filter} : item))
+        setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
         //setFilter(filter);
     }
 
-    const todoListJSX = todolists.map(item => {
+    const removeTodoList = () => {
+
+    }
+
+    function addTodoList() {
+        const id = v1();
+        const newTodoList = {id: id,title: 'Wht reat', filter: 'all'}
+
+        setTodoListBox([...todoListBox, newTodoList])
+
+        setTasks({...tasks, [id]: [
+            {id: v1(), title: "Ryzen 7 5800X", isDone: true},
+            {id: v1(), title: "MSI GTX 3060", isDone: true},
+            {id: v1(), title: "GINZZU", isDone: false},
+            {id: v1(), title: "Black Fury 16GB", isDone: false}
+        ]})
+    }
+
+    const todoListJSX = todoListBox.map(item => {
 
         let tasksForTodoList = tasks[item.id];
 
@@ -112,12 +121,29 @@ function App() {
                 addTask = {addTask} 
                 changeFilter = {changeFilter} 
                 changeStatus = {changeStatus}
-            />)
+                removeTodoList = {removeTodoList}
+            />
+        )
     })
 
     return (
         <div className="container">
             <div className="row">
+                <div className="col-12">
+                    <h1>Add new todolist</h1>
+
+                    <div className="row g-3">
+                        <div className="col-md-4">
+                            <input value={todoList} onChange={e => setTodoList(e.currentTarget.value)}/>
+                        </div>
+                        <div className="col">
+                            <Button title='+' callBack={addTodoList} btnClass='btn btn-primary'/>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+            
                 {todoListJSX}
             </div>
         </div>
