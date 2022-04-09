@@ -42,7 +42,8 @@ const App = () => {
             {id: v1(), title: "Ryzen 7 5800X", isDone: true},
             {id: v1(), title: "MSI GTX 3060", isDone: true},
             {id: v1(), title: "GINZZU", isDone: false},
-            {id: v1(), title: "Black Fury 16GB", isDone: false}
+            {id: v1(), title: "Black Fury 16GB", isDone: false},
+            {id: v1(), title: "ASUS ROG STRIX B550-F", isDone: false}
         ]
     });
 
@@ -90,8 +91,13 @@ const App = () => {
             {id: v1(), title: "Ryzen 7 5800X", isDone: true},
             {id: v1(), title: "MSI GTX 3060", isDone: true},
             {id: v1(), title: "GINZZU", isDone: false},
-            {id: v1(), title: "Black Fury 16GB", isDone: false}
+            {id: v1(), title: "Black Fury 16 GB", isDone: false},
+            {id: v1(), title: "ASUS ROG STRIX B550-F", isDone: false}
         ]})
+    }
+
+    function updateTask(todoListId: string, taskId: string, newTitle: string) {
+        setTasks({...tasks, [todoListId]: [...tasks[todoListId].map(item => item.id === taskId ? {...item, title: newTitle} : item)]})
     }
 
     const todoListJSX = todoListBox.map(item => {
@@ -122,12 +128,13 @@ const App = () => {
                 changeFilter = {changeFilter} 
                 changeStatus = {changeStatus}
                 removeTodoList = {removeTodoList}
+                updateTask = {updateTask}
             />
         )
     })
 
     return (
-        <div className="container">
+        <div className="container-xxl">
             <div className="row">
                 <div className="col-12">
                     <h1>Add new todolist</h1>

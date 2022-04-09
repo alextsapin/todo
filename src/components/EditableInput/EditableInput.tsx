@@ -2,15 +2,17 @@ import React, {ChangeEvent} from 'react';
 
 type EditableInputPropsType = {
     title: string
-    setNewTitle: (title: string) => void
+    callBack: (newTitle: string) => void
 }
 
 const EditableInput = (props: EditableInputPropsType) => {
 
     const [edit, setEdit] = React.useState(false);
 
+    const [newTitle, setNewTitle] = React.useState(props.title);
+
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setNewTitle(e.currentTarget.value)
+        setNewTitle(e.currentTarget.value)
     }
 
     const turnOnHandler = () => {
@@ -19,11 +21,12 @@ const EditableInput = (props: EditableInputPropsType) => {
 
     const turnOffHandler = () => {
         setEdit(false)
+        props.callBack(newTitle)
     }
 
     return (
         edit 
-        ? <input onBlur={turnOffHandler} value={props.title} autoFocus/> 
+        ? <input value={newTitle} onBlur={turnOffHandler} onChange={onChangeHandler} autoFocus/> 
         : <span onDoubleClick={turnOnHandler}>{props.title}</span>
     )
 }

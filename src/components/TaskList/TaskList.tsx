@@ -9,12 +9,13 @@ type TaskListPropsType = {
     removeTask: (todoListID: string, id: string) => void
     addTask: (todoListId: string, title: string) => void
     changeStatus: (id: string, isDone: boolean) => void
+    updateTask: (todoListId: string, taskId: string, newTitle: string) => void
 }
 
-const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID}) => {
+const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID, updateTask}) => {
 
-    const setNewTitle = () => {
-
+    const updateTaskHandler = (taskId: string, newTitle: string) => {
+        updateTask(todoListID, taskId, newTitle) 
     }
 
     const taskJSXElements = tasks.map(t => {
@@ -25,7 +26,7 @@ const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoL
                 </div>
                 
                 <div className="col-md-4 d-flex flex-column justify-content-center">
-                    <EditableInput title={t.title} setNewTitle={setNewTitle}/>
+                    <EditableInput title={t.title} callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)}/>
                 </div>
 
                 <div className="col-md-4">

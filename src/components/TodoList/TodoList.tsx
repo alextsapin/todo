@@ -5,13 +5,14 @@ import {TaskType, FilterValuesType} from '../../App';
 
 type TodoListPropsType = {
     todoListID: string
+    filter: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
     addTask: (todoListID: string, title: string) => void
     changeFilter: (todoListId: string, filter: FilterValuesType) => void
     changeStatus: (id: string, isDone: boolean) => void
     removeTodoList: (todoListId: string) => void
-    filter: string
+    updateTask: (todoListId: string, taskId: string, newTitle: string) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
@@ -53,7 +54,14 @@ const TodoList = (props: TodoListPropsType) => {
                 </div>
             </div>
 
-            <TaskList tasks={props.tasks} todoListID={props.todoListID} removeTask={props.removeTask} addTask={props.addTask} changeStatus={props.changeStatus}/>
+            <TaskList 
+                tasks={props.tasks} 
+                todoListID={props.todoListID} 
+                removeTask={props.removeTask} 
+                addTask={props.addTask} 
+                changeStatus={props.changeStatus}
+                updateTask = {props.updateTask}
+            />
 
             <div>
                 <Button 
