@@ -50,11 +50,7 @@ const App = () => {
     const [filter, setFilter] = React.useState('all');
 
     const removeTask = (todolistID: string, id: string) => {
-
         setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
-
-        //const filteredTasks = tasks.filter(t => t.id !== id)
-        //setTasks(filteredTasks);
     }
 
     const addTask = (todolistID: string, title: string) => {
@@ -67,19 +63,15 @@ const App = () => {
         setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
     }
 
-    const changeStatus = (id: string, isDone: boolean) => {
-        //const updateTasks = tasks.map(t => t.id === id ? {...t, isDone: isDone} : t);
-        //setTasks(updateTasks);
+    const changeStatus = (todoListId: string, taskId: string, isDone: boolean) => {
+        setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
     }
 
     const changeFilter = (todoListID: string, filter: FilterValuesType) => {
         setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
-        //setFilter(filter);
     }
 
-    const removeTodoList = () => {
-
-    }
+    const removeTodoList = () => {}
 
     function addTodoList() {
         const id = v1();
@@ -87,13 +79,7 @@ const App = () => {
 
         setTodoListBox([...todoListBox, newTodoList])
 
-        setTasks({...tasks, [id]: [
-            {id: v1(), title: "Ryzen 7 5800X", isDone: true},
-            {id: v1(), title: "MSI GTX 3060", isDone: true},
-            {id: v1(), title: "GINZZU", isDone: false},
-            {id: v1(), title: "Black Fury 16 GB", isDone: false},
-            {id: v1(), title: "ASUS ROG STRIX B550-F", isDone: false}
-        ]})
+        setTasks({...tasks, [id]: []})
     }
 
     function updateTask(todoListId: string, taskId: string, newTitle: string) {

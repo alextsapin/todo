@@ -10,7 +10,7 @@ type TodoListPropsType = {
     removeTask: (todolistID: string, id: string) => void
     addTask: (todoListID: string, title: string) => void
     changeFilter: (todoListId: string, filter: FilterValuesType) => void
-    changeStatus: (id: string, isDone: boolean) => void
+    changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
     removeTodoList: (todoListId: string) => void
     updateTask: (todoListId: string, taskId: string, newTitle: string) => void
 }
@@ -32,25 +32,33 @@ const TodoList = (props: TodoListPropsType) => {
 
     const inputClass = error === '' ? 'form-control' : 'form-control is-invalid';
 
-    const removeTodoList = () => {
-        //setTodoLists(TodoList)
-    }
+    const removeTodoList = () => {}
 
     return (
-        <div className="col-md-6">
-            <h1>What to learn</h1><button onClick={removeTodoList}>х</button>
-            <div className="row g-3">
-                <div className="col-md-4">
-                    <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}
-                        onKeyPress={(e) => {
-                            if(e.key === 'Enter') {
-                                addTask()
-                            }
-                        }}
-                    />
-                </div>
-                <div className="col">
-                    <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
+        <div className="col-md-4">
+            <div className="container">
+                <div className="row">
+                    <h1>What to learn</h1>
+                    <div className="col-md-8">
+                        <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}
+                            onKeyPress={(e) => {
+                                if(e.key === 'Enter') {
+                                    addTask()
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
+                    </div>
+
+                    <div className="col-md-2">
+                        <Button 
+                            title='❌' 
+                            callBack={removeTodoList} 
+                            filterClass={'btn btn-light'}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -63,7 +71,7 @@ const TodoList = (props: TodoListPropsType) => {
                 updateTask = {props.updateTask}
             />
 
-            <div>
+            <div className="container">
                 <Button 
                     title='All' 
                     callBack={() => props.changeFilter(props.todoListID, 'all')} 
