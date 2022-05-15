@@ -1,6 +1,6 @@
 body {
-    background: url('./images/bg.jpg');
-    color: white;
+    background: #E7EBF0;
+    color: black;
     padding: 50px 0 50px 0;
 }
 
@@ -9,3 +9,35 @@ h1 {
     margin: 0 0 40px 0;
     text-align: center;
 }
+
+// Фильтрация
+.filterBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.filterBox__btn {
+    width: 110px;
+}
+
+.taskBox {
+    padding: 15px 5px;
+}
+
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.task_completed span {
+    text-decoration: line-through;
+}
+
+.righted {
+    margin-left: auto !important;
+  }

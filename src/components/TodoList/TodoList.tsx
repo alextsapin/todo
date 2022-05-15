@@ -1,7 +1,10 @@
 import React from 'react';
-import Button from '../Button/Button';
+import ButtonElement from '../Button/Button';
 import TaskList from '../TaskList/TaskList';
 import {TaskType, FilterValuesType} from '../../App';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodoListPropsType = {
     todoListID: string
@@ -35,7 +38,8 @@ const TodoList = (props: TodoListPropsType) => {
     const removeTodoList = () => {}
 
     return (
-        <div className="col-md-4">
+        <Grid item md={4}>
+            <Paper className="taskBox" elevation={3}>
             <div className="container">
                 <div className="row">
                     <h1>What to learn</h1>
@@ -49,14 +53,17 @@ const TodoList = (props: TodoListPropsType) => {
                         />
                     </div>
                     <div className="col-md-2">
-                        <Button title='+' callBack={addTask} btnClass='btn btn-primary'/>
+                        <ButtonElement title='+' variant='contained' callBack={addTask}/>
+                        <DeleteIcon/>
                     </div>
 
                     <div className="col-md-2">
-                        <Button 
-                            title='❌' 
+                        <ButtonElement 
+                            title='888' 
+                            variant='outlined'
                             callBack={removeTodoList} 
                             filterClass={'btn btn-light'}
+                            startIcon={<DeleteIcon/>}
                         />
                     </div>
                 </div>
@@ -71,26 +78,33 @@ const TodoList = (props: TodoListPropsType) => {
                 updateTask = {props.updateTask}
             />
 
-            <div className="container">
-                <Button 
+            <div className="filterBox">
+                <ButtonElement 
                     title='All' 
+                    variant='contained'
                     callBack={() => props.changeFilter(props.todoListID, 'all')} 
-                    filterClass={props.filter === 'all' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
+                    disabled={props.filter === 'all' ? true : false}
+                    btnClass='filterBox__btn'
                 />
 
-                <Button 
+                <ButtonElement
                     title='Active' 
+                    variant='contained'
                     callBack={() => props.changeFilter(props.todoListID, 'active')} 
-                    filterClass={props.filter === 'active' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
+                    disabled={props.filter === 'active' ? true : false}
+                    btnClass='filterBox__btn'
                 />
 
-                <Button 
+                <ButtonElement
                     title='Completed' 
+                    variant='contained'
                     callBack={() => props.changeFilter(props.todoListID, 'completed')} 
-                    filterClass={props.filter === 'completed' ? 'btn btn-danger me-2' : 'btn btn-primary me-2'}
+                    disabled={props.filter === 'completed' ? true : false}
+                    btnClass='filterBox__btn'
                 />
             </div>
-        </div>
+            </Paper>
+        </Grid>
     )
 }
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import TodoList from './components/TodoList/TodoList';
 import {v1} from 'uuid';
-import Button from './components/Button/Button'
+import ButtonElement from './components/Button/Button';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import './main.scss';
 
 export type TaskType = {
@@ -49,11 +52,11 @@ const App = () => {
 
     const [filter, setFilter] = React.useState('all');
 
-    const removeTask = (todolistID: string, id: string) => {
+    function removeTask(todolistID: string, id: string) {
         setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
     }
 
-    const addTask = (todolistID: string, title: string) => {
+    function addTask(todolistID: string, title: string) {
         const newTask: TaskType = {
             id: v1(),
             title: title,
@@ -63,19 +66,26 @@ const App = () => {
         setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
     }
 
-    const changeStatus = (todoListId: string, taskId: string, isDone: boolean) => {
+    function changeStatus(todoListId: string, taskId: string, isDone: boolean) {
         setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
     }
 
-    const changeFilter = (todoListID: string, filter: FilterValuesType) => {
+    function changeFilter (todoListID: string, filter: FilterValuesType) {
         setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
     }
 
-    const removeTodoList = () => {}
+    function removeTodoList () {
+        alert(123)
+    }
 
     function addTodoList() {
         const id = v1();
-        const newTodoList = {id: id,title: 'Wht reat', filter: 'all'}
+        
+        const newTodoList = {
+            id: id, 
+            title: 'Wht reat', 
+            filter: 'all'
+        }
 
         setTodoListBox([...todoListBox, newTodoList])
 
@@ -120,26 +130,21 @@ const App = () => {
     })
 
     return (
-        <div className="container-xxl">
-            <div className="row">
-                <div className="col-12">
-                    <h1>Add new todolist</h1>
-
-                    <div className="row g-3">
-                        <div className="col-md-4">
+        <Container fixed>
+                <Grid container spacing={2}>
+                    <Grid className="mb-4" item md={4}>
+                        <Paper className="p-3">
+                            <h1>Add new todolist</h1>
                             <input value={todoList} onChange={e => setTodoList(e.currentTarget.value)}/>
-                        </div>
-                        <div className="col">
-                            <Button title='+' callBack={addTodoList} btnClass='btn btn-primary'/>
-                        </div>
-                    </div>
-                </div>
+                            <ButtonElement title='+' variant='contained' callBack={addTodoList} btnClass='btn btn-primary'/>
+                        </Paper>
+                    </Grid>
+                </Grid>
 
-                <hr/>
-            
-                {todoListJSX}
-            </div>
-        </div>
+                <Grid container spacing={2}>
+                    {todoListJSX}
+                </Grid>
+        </Container>
     )
 }
 
