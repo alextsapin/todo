@@ -1,7 +1,9 @@
 import React, {ChangeEvent} from 'react';
+import TextField from '@mui/material/TextField';
 
 type EditableInputPropsType = {
     title: string
+    css?: string
     callBack: (newTitle: string) => void
 }
 
@@ -26,8 +28,8 @@ const EditableInput = (props: EditableInputPropsType) => {
 
     return (
         edit 
-        ? <input value={newTitle} onBlur={turnOffHandler} onChange={onChangeHandler} autoFocus/> 
-        : <span onDoubleClick={turnOnHandler}>{props.title}</span>
+        ? <TextField value={newTitle} onBlur={turnOffHandler} onChange={onChangeHandler} autoFocus size="small"/> 
+        : <span className={props.css} onDoubleClick={turnOnHandler}>{props.title}</span>
     )
 }
 

@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
+import EditableInput from '../EditableInput/EditableInput';
 
 type TodoListPropsType = {
     title: string
@@ -19,6 +20,7 @@ type TodoListPropsType = {
     changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
     removeTodoList: (todoListId: string) => void
     updateTask: (todoListId: string, taskId: string, newTitle: string) => void
+    editTitleTodoList: (todoListId: string, newTitle: string) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
@@ -40,10 +42,15 @@ const TodoList = (props: TodoListPropsType) => {
         props.removeTodoList(props.todoListID)
     }
 
+
+    function editTitleTodoList(newTitle: string) {
+        props.editTitleTodoList(props.todoListID, newTitle)
+    }
+
     return (
         <Grid item md={4}>
             <Paper className="taskBox" elevation={3}>
-                <p className="taskBox__title">{props.title}</p>
+                <EditableInput title={props.title} css="taskBox__title" callBack={(newTitle) => editTitleTodoList(newTitle)}/>
                 <ButtonElement 
                     title='' 
                     variant='contained'
@@ -102,7 +109,7 @@ const TodoList = (props: TodoListPropsType) => {
                     />
 
                     <ButtonElement
-                        title='Completed' 
+                        title='DONE' 
                         variant='contained'
                         callBack={() => props.changeFilter(props.todoListID, 'completed')} 
                         disabled={props.filter === 'completed' ? true : false}

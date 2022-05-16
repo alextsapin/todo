@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import TextField from '@mui/material/TextField';
 import './main.scss';
 
 export type TaskType = {
@@ -27,14 +28,16 @@ const App = () => {
     const todolistID1 = v1();
     const todolistID2 = v1();
 
-    let [todoListTitle, setTodoListTitle] = React.useState('');
+    const [todoListTitle, setTodoListTitle] = React.useState('');
+
+    const [error, setError] = React.useState(false);
 
     let [todoListBox, setTodoListBox] = React.useState<Array<TodoListsType>>([
         {id: todolistID1, title: 'What to learn:', filter: 'all'},
         {id: todolistID2, title: 'What to buy:', filter: 'all'},
     ])
 
-    let [tasks, setTasks] = React.useState({
+    const [tasks, setTasks] = React.useState({
         [todolistID1]:[
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -82,6 +85,11 @@ const App = () => {
         setTodoListBox([...todoListBox.filter(item => item.id !== id)])
     }
 
+    // Обновим название todoList
+    function editTitleTodoList(id: string, newTitle: string) {
+        setTodoListBox([...todoListBox.map(item => item.id === id ? {...item, title: newTitle} : item)])
+    }
+
     // Добавим todoList
     function addTodoList() {
         const id = v1();
@@ -92,9 +100,15 @@ const App = () => {
             filter: 'all'
         }
 
-        setTodoListBox([...todoListBox, newTodoList])
-
-        setTasks({...tasks, [id]: []})
+        const trimmedTitle = todoListTitle.trim();
+        if(trimmedTitle) {
+            setTodoListBox([...todoListBox, newTodoList])
+            setTasks({...tasks, [id]: []})
+            setTodoListTitle('')
+            setError(false)
+        } else {
+            setError(true)
+        }
     }
 
     // Обновим задачу
@@ -122,7 +136,7 @@ const App = () => {
         return (
             <TodoList 
                 key = {item.id}
-                title={item.title}
+                title = {item.title}
                 todoListID = {item.id}
                 filter = {item.filter} 
                 tasks = {tasksForTodoList} 
@@ -132,6 +146,7 @@ const App = () => {
                 changeStatus = {changeStatus}
                 removeTodoList = {removeTodoList}
                 updateTask = {updateTask}
+                editTitleTodoList = {editTitleTodoList}
             />
         )
     })
@@ -139,16 +154,26 @@ const App = () => {
     return (
         <Container fixed>
                 <Grid container spacing={2}>
-                    <Grid className="mb-4" item md={4}>
-                        <Paper elevation={3} className="p-3">
+                    <Grid item md={4}>
+                        <Paper className="taskBox" elevation={3}>
                             <p className="taskBox__title">Add new todolist</p>
-                            <input value={todoListTitle} onChange={e => setTodoListTitle(e.currentTarget.value)}/>
-                            <ButtonElement 
-                                title='ADD' 
-                                variant='contained' 
-                                callBack={addTodoList}
-                                startIcon={<AddCircleIcon/>}
-                            />
+
+                            <div className="formBox">
+                                <TextField 
+                                    value={todoListTitle} 
+                                    onChange={e => setTodoListTitle(e.currentTarget.value)}
+                                    size="small"
+                                    label="Add new todoList" 
+                                    error={error}
+                                />
+
+                                <ButtonElement 
+                                    title='ADD' 
+                                    variant='contained' 
+                                    callBack={addTodoList}
+                                    startIcon={<AddCircleIcon/>}
+                                />
+                            </div>
                         </Paper>
                     </Grid>
                 </Grid>
