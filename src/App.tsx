@@ -5,6 +5,7 @@ import ButtonElement from './components/Button/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import './main.scss';
 
 export type TaskType = {
@@ -26,11 +27,11 @@ const App = () => {
     const todolistID1 = v1();
     const todolistID2 = v1();
 
-    let [todoList, setTodoList] = React.useState('');
+    let [todoListTitle, setTodoListTitle] = React.useState('');
 
     let [todoListBox, setTodoListBox] = React.useState<Array<TodoListsType>>([
-        {id: todolistID1, title: 'What to learn', filter: 'all'},
-        {id: todolistID2, title: 'What to buy', filter: 'all'},
+        {id: todolistID1, title: 'What to learn:', filter: 'all'},
+        {id: todolistID2, title: 'What to buy:', filter: 'all'},
     ])
 
     let [tasks, setTasks] = React.useState({
@@ -50,12 +51,12 @@ const App = () => {
         ]
     });
 
-    const [filter, setFilter] = React.useState('all');
-
+    // Удалим задачу
     function removeTask(todolistID: string, id: string) {
         setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
     }
 
+    // Добавим задачу
     function addTask(todolistID: string, title: string) {
         const newTask: TaskType = {
             id: v1(),
@@ -66,24 +67,28 @@ const App = () => {
         setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
     }
 
+    // Изменим статус задачи
     function changeStatus(todoListId: string, taskId: string, isDone: boolean) {
         setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
     }
 
+    // Изменим фильтр
     function changeFilter (todoListID: string, filter: FilterValuesType) {
         setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
     }
 
-    function removeTodoList () {
-        alert(123)
+    // Удалим todoList
+    function removeTodoList (id: string) {
+        setTodoListBox([...todoListBox.filter(item => item.id !== id)])
     }
 
+    // Добавим todoList
     function addTodoList() {
         const id = v1();
         
         const newTodoList = {
             id: id, 
-            title: 'Wht reat', 
+            title: todoListTitle, 
             filter: 'all'
         }
 
@@ -92,6 +97,7 @@ const App = () => {
         setTasks({...tasks, [id]: []})
     }
 
+    // Обновим задачу
     function updateTask(todoListId: string, taskId: string, newTitle: string) {
         setTasks({...tasks, [todoListId]: [...tasks[todoListId].map(item => item.id === taskId ? {...item, title: newTitle} : item)]})
     }
@@ -116,6 +122,7 @@ const App = () => {
         return (
             <TodoList 
                 key = {item.id}
+                title={item.title}
                 todoListID = {item.id}
                 filter = {item.filter} 
                 tasks = {tasksForTodoList} 
@@ -133,10 +140,15 @@ const App = () => {
         <Container fixed>
                 <Grid container spacing={2}>
                     <Grid className="mb-4" item md={4}>
-                        <Paper className="p-3">
-                            <h1>Add new todolist</h1>
-                            <input value={todoList} onChange={e => setTodoList(e.currentTarget.value)}/>
-                            <ButtonElement title='+' variant='contained' callBack={addTodoList} btnClass='btn btn-primary'/>
+                        <Paper elevation={3} className="p-3">
+                            <p className="taskBox__title">Add new todolist</p>
+                            <input value={todoListTitle} onChange={e => setTodoListTitle(e.currentTarget.value)}/>
+                            <ButtonElement 
+                                title='ADD' 
+                                variant='contained' 
+                                callBack={addTodoList}
+                                startIcon={<AddCircleIcon/>}
+                            />
                         </Paper>
                     </Grid>
                 </Grid>

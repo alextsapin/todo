@@ -5,8 +5,11 @@ import {TaskType, FilterValuesType} from '../../App';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import TextField from '@mui/material/TextField';
 
 type TodoListPropsType = {
+    title: string
     todoListID: string
     filter: string
     tasks: Array<TaskType>
@@ -20,89 +23,92 @@ type TodoListPropsType = {
 
 const TodoList = (props: TodoListPropsType) => {
     const [title, setTitle] = React.useState('');
-    const [error, setError] = React.useState('');
+    const [error, setError] = React.useState(false);
     
     const addTask = () => {
         const trimmedTitle = title.trim();
         if(trimmedTitle) {
             props.addTask(props.todoListID, trimmedTitle);
-            setError('');
+            setError(false);
             setTitle('');
         } else {
-            setError('error')
+            setError(true)
         }
     }
 
-    const inputClass = error === '' ? 'form-control' : 'form-control is-invalid';
-
-    const removeTodoList = () => {}
+    function removeTodoList() {
+        props.removeTodoList(props.todoListID)
+    }
 
     return (
         <Grid item md={4}>
             <Paper className="taskBox" elevation={3}>
-            <div className="container">
-                <div className="row">
-                    <h1>What to learn</h1>
-                    <div className="col-md-8">
-                        <input className={inputClass} value={title} onChange={e => setTitle(e.currentTarget.value)}
-                            onKeyPress={(e) => {
-                                if(e.key === 'Enter') {
-                                    addTask()
-                                }
-                            }}
-                        />
-                    </div>
-                    <div className="col-md-2">
-                        <ButtonElement title='+' variant='contained' callBack={addTask}/>
-                        <DeleteIcon/>
-                    </div>
-
-                    <div className="col-md-2">
-                        <ButtonElement 
-                            title='888' 
-                            variant='outlined'
-                            callBack={removeTodoList} 
-                            filterClass={'btn btn-light'}
-                            startIcon={<DeleteIcon/>}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <TaskList 
-                tasks={props.tasks} 
-                todoListID={props.todoListID} 
-                removeTask={props.removeTask} 
-                addTask={props.addTask} 
-                changeStatus={props.changeStatus}
-                updateTask = {props.updateTask}
-            />
-
-            <div className="filterBox">
+                <p className="taskBox__title">{props.title}</p>
                 <ButtonElement 
-                    title='All' 
+                    title='' 
                     variant='contained'
-                    callBack={() => props.changeFilter(props.todoListID, 'all')} 
-                    disabled={props.filter === 'all' ? true : false}
-                    btnClass='filterBox__btn'
+                    color="error"
+                    callBack={removeTodoList} 
+                    btnClass="taskBox__del"
+                    startIcon={<DeleteIcon/>}
+                />
+                
+                <div className="formBox">
+                    <TextField 
+                        error={error}
+                        value={title} 
+                        size="small"
+                        onChange={e => setTitle(e.currentTarget.value)}
+                        label="Add new task" 
+                        onKeyPress={(e) => {
+                            if(e.key === 'Enter') {
+                                addTask()
+                            }
+                        }}
+                    />
+
+                    <ButtonElement 
+                        title='ADD' 
+                        variant='contained' 
+                        callBack={addTask}
+                        startIcon={<AddCircleIcon/>}
+                    />
+                </div>
+                
+                <TaskList 
+                    tasks={props.tasks} 
+                    todoListID={props.todoListID} 
+                    removeTask={props.removeTask} 
+                    addTask={props.addTask} 
+                    changeStatus={props.changeStatus}
+                    updateTask = {props.updateTask}
                 />
 
-                <ButtonElement
-                    title='Active' 
-                    variant='contained'
-                    callBack={() => props.changeFilter(props.todoListID, 'active')} 
-                    disabled={props.filter === 'active' ? true : false}
-                    btnClass='filterBox__btn'
-                />
+                <div className="filterBox">
+                    <ButtonElement 
+                        title='All' 
+                        variant='contained'
+                        callBack={() => props.changeFilter(props.todoListID, 'all')} 
+                        disabled={props.filter === 'all' ? true : false}
+                        btnClass='filterBox__btn'
+                    />
 
-                <ButtonElement
-                    title='Completed' 
-                    variant='contained'
-                    callBack={() => props.changeFilter(props.todoListID, 'completed')} 
-                    disabled={props.filter === 'completed' ? true : false}
-                    btnClass='filterBox__btn'
-                />
-            </div>
+                    <ButtonElement
+                        title='Active' 
+                        variant='contained'
+                        callBack={() => props.changeFilter(props.todoListID, 'active')} 
+                        disabled={props.filter === 'active' ? true : false}
+                        btnClass='filterBox__btn'
+                    />
+
+                    <ButtonElement
+                        title='Completed' 
+                        variant='contained'
+                        callBack={() => props.changeFilter(props.todoListID, 'completed')} 
+                        disabled={props.filter === 'completed' ? true : false}
+                        btnClass='filterBox__btn'
+                    />
+                </div>
             </Paper>
         </Grid>
     )
