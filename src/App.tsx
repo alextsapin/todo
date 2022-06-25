@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
+import {useSelector} from 'react-redux';
 import './main.scss';
 
 export type TaskType = {
@@ -24,6 +25,8 @@ export type TodoListsType = {
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 const App = () => {
+
+    const data = useSelector<any, any>(state => state.main)
 
     const todolistID1 = v1();
     const todolistID2 = v1();

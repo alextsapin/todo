@@ -3,11 +3,11 @@ import {combineReducers, createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
 // Reducers
-import reducer from './reducer';
+import todoReducer from './reducers/todo';
 
 // Объединим редьюсеры
 let rootReducer = combineReducers({
-    main: reducer
+    todo: todoReducer
 });
 
 type rootReducerType = typeof rootReducer;
