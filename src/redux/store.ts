@@ -4,10 +4,12 @@ import thunkMiddleware from 'redux-thunk';
 
 // Reducers
 import todoReducer from './reducers/todo';
+import taskReducer from './reducers/task';
 
 // Объединим редьюсеры
 let rootReducer = combineReducers({
-    todo: todoReducer
+    todo: todoReducer,
+    task: taskReducer
 });
 
 type rootReducerType = typeof rootReducer;

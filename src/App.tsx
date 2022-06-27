@@ -26,7 +26,6 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 
 const App = () => {
 
-    const data = useSelector<any, any>(state => state.main)
 
     const todolistID1 = v1();
     const todolistID2 = v1();
