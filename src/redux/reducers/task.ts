@@ -1,6 +1,8 @@
 import {v1} from 'uuid';
 
 import {todoListID1, todoListID2} from './todo';
+import {addTodoListAC, deleteTodoListAC} from './todo';
+import {addTodoListType, deleteTodoListType} from './todo';
 
 const initialState = {
     [todoListID1]:[
@@ -19,7 +21,7 @@ const initialState = {
     ]
 }
 
-type ACTypes = addTaskType | deleteTaskType
+type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType
 
 const taskReducer = (state = initialState, action: ACTypes)   => {
     switch(action.type) {   
@@ -37,6 +39,30 @@ const taskReducer = (state = initialState, action: ACTypes)   => {
             return {
                 ...state, [action.todoListID]: state[action.todoListID].filter(item => item.id !== action.taskID)
             }
+        }
+
+        case 'CHANGE_TASK_STATUS': {
+            return {
+                ...state, [action.todoListID]: state[action.todoListID].map(item => item.id === action.taskID ? {...item, isDone: !item.isDone}: item)
+            }
+        }
+
+        case 'UPDATE_TASK_TITLE': {
+            return {
+                ...state, [action.todoListID]: state[action.todoListID].map(item => item.id === action.taskID ? {...item, title: action.title}: item)
+            }
+        }
+
+        case 'ADD_TODO_LIST': {
+            return {
+                ...state, [action.id]: []
+            }
+        }
+
+        case 'DELETE_TODO_LIST': {
+            const copy = {...state}
+            delete copy[action.id]
+            return copy
         }
 
         default: {
@@ -70,6 +96,36 @@ export const deleteTaskAC = (todoListID: string, taskID: string) => {
         type: 'DELETE_TASK' as const,
         todoListID,
         taskID
+    }
+}
+
+type changeTaskStatusType = {
+    type: 'CHANGE_TASK_STATUS'
+    todoListID: string
+    taskID: string
+}
+
+export const changeTaskStatusAC = (todoListID: string, taskID: string) => {
+    return {
+        type: 'CHANGE_TASK_STATUS' as const,
+        todoListID,
+        taskID
+    }
+}
+
+type updateTaskSTitleType = {
+    type: 'UPDATE_TASK_TITLE'
+    todoListID: string
+    taskID: string
+    title: string
+}
+
+export const updateTaskTitleAC = (todoListID: string, taskID: string, title: string) => {
+    return {
+        type: 'UPDATE_TASK_TITLE' as const,
+        todoListID,
+        taskID,
+        title
     }
 }
 

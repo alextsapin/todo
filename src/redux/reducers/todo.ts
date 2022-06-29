@@ -26,7 +26,7 @@ const todoReducer = (state = initialState, action: ACType)   => {
         case 'ADD_TODO_LIST': {
             return [...state, 
                 {
-                    id: v1(),
+                    id: action.id,
                     title: action.title,
                     filter: 'all'
                 }
@@ -51,8 +51,8 @@ const todoReducer = (state = initialState, action: ACType)   => {
     }
 }
 
-type deleteTodoListType = {
-    type: 'DELETE_TODO_LIST',
+export type deleteTodoListType = {
+    type: 'DELETE_TODO_LIST'
     id: string
 }
 
@@ -63,20 +63,22 @@ export const deleteTodoListAC = (id: string) => {
     }
 }
 
-type addTodoListType = {
-    type: 'ADD_TODO_LIST',
+export type addTodoListType = {
+    type: 'ADD_TODO_LIST'
+    id: string
     title: string
 }
 
 export const addTodoListAC = (title: string) => {
     return {
         type: 'ADD_TODO_LIST' as const,
+        id: v1(),
         title
     }
 }
 
 type changeTodoListTitleType = {
-    type: 'CHANGE_TODO_LIST_TITLE',
+    type: 'CHANGE_TODO_LIST_TITLE'
     id: string
     title: string
 }
@@ -90,7 +92,7 @@ export const changeTodoListTitleAC = (id: string, title: string) => {
 }
 
 type changeTodoListFilterType = {
-    type: 'CHANGE_TODO_LIST_FILTER',
+    type: 'CHANGE_TODO_LIST_FILTER'
     id: string
     filter: filterType
 }

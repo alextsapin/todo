@@ -9,6 +9,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import {useSelector} from 'react-redux';
 import './main.scss';
+import {AppStateType} from './redux/store';
 
 export type TaskType = {
     id: string
@@ -16,7 +17,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-export type TodoListsType = {
+export type TodoListType = {
     id: string
     title: string
     filter: string
@@ -26,6 +27,11 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 
 const App = () => {
 
+    const TodoListBox2 = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
+    const TaskBox2 = useSelector<AppStateType, {}>(state => state.task)
+
+    console.log(TaskBox2)
+    
 
     const todolistID1 = v1();
     const todolistID2 = v1();
@@ -34,7 +40,7 @@ const App = () => {
 
     const [error, setError] = React.useState(false);
 
-    let [todoListBox, setTodoListBox] = React.useState<Array<TodoListsType>>([
+    let [todoListBox, setTodoListBox] = React.useState<Array<TodoListType>>([
         {id: todolistID1, title: 'What to learn:', filter: 'all'},
         {id: todolistID2, title: 'What to buy:', filter: 'all'},
     ])
@@ -158,7 +164,7 @@ const App = () => {
                 <Grid container spacing={2}>
                     <Grid item md={4}>
                         <Paper className="taskBox" elevation={3}>
-                            <p className="taskBox__title">Add new todolist</p>
+                            <p className="taskBox__title">Add new todoList</p>
 
                             <div className="formBox">
                                 <TextField 
