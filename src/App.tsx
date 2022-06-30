@@ -7,14 +7,20 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
-import {useSelector} from 'react-redux';
-import './main.scss';
+import {useSelector, useDispatch} from 'react-redux';
 import {AppStateType} from './redux/store';
+import './main.scss';
+import {addTodoListTC, changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from './redux/reducers/todo';
+import {filterType} from './redux/reducers/todo'
 
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
+}
+
+export type TaskBoxType = {
+    [key: string]: Array<TaskType>
 }
 
 export type TodoListType = {
@@ -23,48 +29,46 @@ export type TodoListType = {
     filter: string
 }
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
-
 const App = () => {
 
-    const TodoListBox2 = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
-    const TaskBox2 = useSelector<AppStateType, {}>(state => state.task)
+    const dispatch = useDispatch();
 
-    console.log(TaskBox2)
-    
-
-    const todolistID1 = v1();
-    const todolistID2 = v1();
+    const todoListBox = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
+    const taskBox = useSelector<AppStateType, TaskBoxType>(state => state.task)
 
     const [todoListTitle, setTodoListTitle] = React.useState('');
 
     const [error, setError] = React.useState(false);
 
-    let [todoListBox, setTodoListBox] = React.useState<Array<TodoListType>>([
-        {id: todolistID1, title: 'What to learn:', filter: 'all'},
-        {id: todolistID2, title: 'What to buy:', filter: 'all'},
-    ])
+    // Todo листы
+    function addTodoList() {
+        const trimmedTitle = todoListTitle.trim();
+        if(trimmedTitle) {
+            dispatch(addTodoListTC(trimmedTitle))
+            setTodoListTitle('')
+            setError(false)
+        } else {
+            setError(true)
+        }
+    }
 
-    const [tasks, setTasks] = React.useState({
-        [todolistID1]:[
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "ReactJS", isDone: false},
-            {id: v1(), title: "Rest API", isDone: false},
-            {id: v1(), title: "GraphQL", isDone: false},
-        ],
-        [todolistID2]:[
-            {id: v1(), title: "Ryzen 7 5800X", isDone: true},
-            {id: v1(), title: "MSI GTX 3060", isDone: true},
-            {id: v1(), title: "GINZZU", isDone: false},
-            {id: v1(), title: "Black Fury 16GB", isDone: false},
-            {id: v1(), title: "ASUS ROG STRIX B550-F", isDone: false}
-        ]
-    });
+    function removeTodoList (id: string) {
+        dispatch(deleteTodoListTC(id))
+    }
 
-    // Удалим задачу
+    function editTitleTodoList(id: string, newTitle: string) {
+        dispatch(changeTodoListTitleTC(id, newTitle));
+    }
+
+    function changeFilter (todoListID: string, filter: filterType) {
+        //setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
+        dispatch(changeTodoListFilterTC(todoListID, filter));
+
+    }
+
+    // Задачи
     function removeTask(todolistID: string, id: string) {
-        setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
+        //setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
     }
 
     // Добавим задачу
@@ -75,70 +79,34 @@ const App = () => {
             isDone: false
         }
 
-        setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
+        //setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
     }
 
     // Изменим статус задачи
     function changeStatus(todoListId: string, taskId: string, isDone: boolean) {
-        setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
-    }
-
-    // Изменим фильтр
-    function changeFilter (todoListID: string, filter: FilterValuesType) {
-        setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
-    }
-
-    // Удалим todoList
-    function removeTodoList (id: string) {
-        setTodoListBox([...todoListBox.filter(item => item.id !== id)])
-    }
-
-    // Обновим название todoList
-    function editTitleTodoList(id: string, newTitle: string) {
-        setTodoListBox([...todoListBox.map(item => item.id === id ? {...item, title: newTitle} : item)])
-    }
-
-    // Добавим todoList
-    function addTodoList() {
-        const id = v1();
-        
-        const newTodoList = {
-            id: id, 
-            title: todoListTitle, 
-            filter: 'all'
-        }
-
-        const trimmedTitle = todoListTitle.trim();
-        if(trimmedTitle) {
-            setTodoListBox([...todoListBox, newTodoList])
-            setTasks({...tasks, [id]: []})
-            setTodoListTitle('')
-            setError(false)
-        } else {
-            setError(true)
-        }
+        //setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
     }
 
     // Обновим задачу
     function updateTask(todoListId: string, taskId: string, newTitle: string) {
-        setTasks({...tasks, [todoListId]: [...tasks[todoListId].map(item => item.id === taskId ? {...item, title: newTitle} : item)]})
+        //setTasks({...tasks, [todoListId]: [...tasks[todoListId].map(item => item.id === taskId ? {...item, title: newTitle} : item)]})
     }
 
     const todoListJSX = todoListBox.map(item => {
 
-        let tasksForTodoList = tasks[item.id];
+        let tasksForTodoList = taskBox[item.id];
 
         switch(item.filter) {
-            case 'active':
-            tasksForTodoList = tasks[item.id].filter(t => t.isDone === false)
+            case 'ACTIVE':
+            tasksForTodoList = taskBox[item.id].filter(t => t.isDone === false)
             break;
     
-            case 'completed':
-            tasksForTodoList = tasks[item.id].filter(t => t.isDone === true)
+            case 'COMPLETED':
+            tasksForTodoList = taskBox[item.id].filter(t => t.isDone === true)
             break;
     
             default:
-            tasksForTodoList = tasks[item.id]
+            tasksForTodoList = taskBox[item.id]
         }
         
         return (

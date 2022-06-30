@@ -1,7 +1,8 @@
 import React from 'react';
 import ButtonElement from '../Button/Button';
 import TaskList from '../TaskList/TaskList';
-import {TaskType, FilterValuesType} from '../../App';
+import {TaskType} from '../../App';
+import {filterType} from '../../redux/reducers/todo';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,7 +17,7 @@ type TodoListPropsType = {
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
     addTask: (todoListID: string, title: string) => void
-    changeFilter: (todoListId: string, filter: FilterValuesType) => void
+    changeFilter: (todoListId: string, filter: filterType) => void
     changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
     removeTodoList: (todoListId: string) => void
     updateTask: (todoListId: string, taskId: string, newTitle: string) => void
@@ -95,7 +96,7 @@ const TodoList = (props: TodoListPropsType) => {
                     <ButtonElement 
                         title='All' 
                         variant='contained'
-                        callBack={() => props.changeFilter(props.todoListID, 'all')} 
+                        callBack={() => props.changeFilter(props.todoListID, 'ALL')} 
                         disabled={props.filter === 'all' ? true : false}
                         btnClass='filterBox__btn'
                     />
@@ -103,7 +104,7 @@ const TodoList = (props: TodoListPropsType) => {
                     <ButtonElement
                         title='Active' 
                         variant='contained'
-                        callBack={() => props.changeFilter(props.todoListID, 'active')} 
+                        callBack={() => props.changeFilter(props.todoListID, 'ACTIVE')} 
                         disabled={props.filter === 'active' ? true : false}
                         btnClass='filterBox__btn'
                     />
@@ -111,7 +112,7 @@ const TodoList = (props: TodoListPropsType) => {
                     <ButtonElement
                         title='DONE' 
                         variant='contained'
-                        callBack={() => props.changeFilter(props.todoListID, 'completed')} 
+                        callBack={() => props.changeFilter(props.todoListID, 'COMPLETED')} 
                         disabled={props.filter === 'completed' ? true : false}
                         btnClass='filterBox__btn'
                     />

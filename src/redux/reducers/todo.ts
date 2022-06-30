@@ -1,4 +1,5 @@
 import {v1} from 'uuid';
+import {Dispatch} from 'redux';
 
 export const todoListID1 = v1();
 export const todoListID2 = v1();
@@ -15,8 +16,8 @@ export type filterType = 'ALL' | 'ACTIVE' | 'COMPLETED';
 export type stateType = Array<todoListType>
 
 const initialState = [
-    {id: todoListID1, title: 'What to learn:', filter: 'all'},
-    {id: todoListID2, title: 'What to buy:', filter: 'all'},
+    {id: todoListID1, title: 'What to learn:', filter: 'ALL'},
+    {id: todoListID2, title: 'What to buy:', filter: 'ALL'},
 ]
 
 type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | changeTodoListFilterType;
@@ -102,6 +103,30 @@ export const changeTodoListFilterAC = (id: string, filter: filterType) => {
         type: 'CHANGE_TODO_LIST_FILTER' as const,
         id,
         filter
+    }
+}
+
+export const addTodoListTC = (title: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(addTodoListAC(title))
+    }
+}
+
+export const deleteTodoListTC = (id: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(deleteTodoListAC(id))
+    }
+}
+
+export const changeTodoListTitleTC = (id: string, title: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(changeTodoListTitleAC(id, title))
+    }
+}
+
+export const changeTodoListFilterTC = (id: string, filter: filterType): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(changeTodoListFilterAC(id, filter))
     }
 }
 
