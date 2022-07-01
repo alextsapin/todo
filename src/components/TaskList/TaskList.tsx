@@ -9,25 +9,26 @@ type TaskListPropsType = {
     todoListID: string
     removeTask: (todoListID: string, id: string) => void
     addTask: (todoListId: string, title: string) => void
-    changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
-    updateTask: (todoListId: string, taskId: string, newTitle: string) => void
+    changeStatus: (todoListId: string, taskId: string) => void
+    updateTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
 }
 
-const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID, updateTask}) => {
+const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID, updateTaskTitle}) => {
 
-    const updateTaskHandler = (taskId: string, newTitle: string) => {
-        updateTask(todoListID, taskId, newTitle) 
+    const updateTaskTitleHandler = (taskId: string, newTitle: string) => {
+        updateTaskTitle(todoListID, taskId, newTitle) 
     }
 
-    const changeStatusHandler = (taskId: string, isDone: boolean) => {
-        changeStatus(todoListID, taskId, isDone); 
+    const changeStatusHandler = (taskId: string) => {
+        changeStatus(todoListID, taskId); 
     }
 
     const taskJSXElements = tasks.map(t => {
+        // Значение чекбокса onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}
         return (
             <div key={t.id} className={t.isDone ? 'task task_completed': 'task'}>
-                <Checkbox checked={t.isDone} onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>    
-                <EditableInput title={t.title} callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)}/>
+                <Checkbox checked={t.isDone} onChange={(e) => changeStatusHandler(t.id)}/>    
+                <EditableInput title={t.title} callBack={(newTitle: string) => updateTaskTitleHandler(t.id, newTitle)}/>
                 <ButtonElement title='❌' variant='text' callBack={() => removeTask(todoListID, t.id)} btnClass='righted'/>
             </div>
         )

@@ -52,6 +52,8 @@ const todoReducer = (state = initialState, action: ACType)   => {
     }
 }
 
+export default todoReducer;
+
 export type deleteTodoListType = {
     type: 'DELETE_TODO_LIST'
     id: string
@@ -106,6 +108,7 @@ export const changeTodoListFilterAC = (id: string, filter: filterType) => {
     }
 }
 
+// Thunk creators
 export const addTodoListTC = (title: string): any => {
     return async (dispatch: Dispatch) => {
         dispatch(addTodoListAC(title))
@@ -129,5 +132,3 @@ export const changeTodoListFilterTC = (id: string, filter: filterType): any => {
         dispatch(changeTodoListFilterAC(id, filter))
     }
 }
-
-export default todoReducer;

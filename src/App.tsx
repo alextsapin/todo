@@ -11,7 +11,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {AppStateType} from './redux/store';
 import './main.scss';
 import {addTodoListTC, changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from './redux/reducers/todo';
-import {filterType} from './redux/reducers/todo'
+import {filterType} from './redux/reducers/todo';
+import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/task';
 
 export type TaskType = {
     id: string
@@ -66,30 +67,23 @@ const App = () => {
 
     }
 
-    // Задачи
-    function removeTask(todolistID: string, id: string) {
-        //setTasks({...tasks, [todolistID]: tasks[todolistID].filter(item => item.id !== id)})
+    // Tasks
+    function addTask(todolistID: string, title: string) {
+        dispatch(addTaskTC(todolistID, title))
     }
 
-    // Добавим задачу
-    function addTask(todolistID: string, title: string) {
-        const newTask: TaskType = {
-            id: v1(),
-            title: title,
-            isDone: false
-        }
-
-        //setTasks({...tasks, [todolistID]: [...tasks[todolistID], newTask]})
+    function removeTask(todolistID: string, taskID: string) {
+        dispatch(deleteTaskTC(todolistID, taskID));
     }
 
     // Изменим статус задачи
-    function changeStatus(todoListId: string, taskId: string, isDone: boolean) {
-        //setTasks({...tasks, [todoListId]: [...tasks[todoListId]].map(item => item.id === taskId ? {...item, isDone: isDone} : item)})
+    function changeStatus(todoListId: string, taskId: string) {
+        dispatch(changeTaskStatusTC(todoListId, taskId))
     }
 
     // Обновим задачу
-    function updateTask(todoListId: string, taskId: string, newTitle: string) {
-        //setTasks({...tasks, [todoListId]: [...tasks[todoListId].map(item => item.id === taskId ? {...item, title: newTitle} : item)]})
+    function updateTaskTitle(todoListId: string, taskId: string, newTitle: string) {
+        dispatch(updateTaskTitleTC(todoListId, taskId, newTitle))
     }
 
     const todoListJSX = todoListBox.map(item => {
@@ -121,7 +115,7 @@ const App = () => {
                 changeFilter = {changeFilter} 
                 changeStatus = {changeStatus}
                 removeTodoList = {removeTodoList}
-                updateTask = {updateTask}
+                updateTaskTitle = {updateTaskTitle}
                 editTitleTodoList = {editTitleTodoList}
             />
         )

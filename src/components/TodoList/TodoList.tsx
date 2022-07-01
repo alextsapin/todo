@@ -18,9 +18,9 @@ type TodoListPropsType = {
     removeTask: (todolistID: string, id: string) => void
     addTask: (todoListID: string, title: string) => void
     changeFilter: (todoListId: string, filter: filterType) => void
-    changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
+    changeStatus: (todoListId: string, taskId: string) => void
     removeTodoList: (todoListId: string) => void
-    updateTask: (todoListId: string, taskId: string, newTitle: string) => void
+    updateTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
     editTitleTodoList: (todoListId: string, newTitle: string) => void
 }
 
@@ -89,7 +89,7 @@ const TodoList = (props: TodoListPropsType) => {
                     removeTask={props.removeTask} 
                     addTask={props.addTask} 
                     changeStatus={props.changeStatus}
-                    updateTask = {props.updateTask}
+                    updateTaskTitle={props.updateTaskTitle}
                 />
 
                 <div className="filterBox">

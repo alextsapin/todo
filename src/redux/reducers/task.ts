@@ -71,6 +71,8 @@ const taskReducer = (state = initialState, action: ACTypes)   => {
     }
 }
 
+export default taskReducer;
+
 type addTaskType = {
     type: 'ADD_TASK'
     todoListID: string
@@ -129,4 +131,27 @@ export const updateTaskTitleAC = (todoListID: string, taskID: string, title: str
     }
 }
 
-export default taskReducer;
+// Thunk creators
+export const addTaskTC = (todoListID: string, title: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(addTaskAC(todoListID, title))
+    }
+}
+
+export const deleteTaskTC = (todoListID: string, taskID: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(deleteTaskAC(todoListID, taskID))
+    }
+}
+
+export const changeTaskStatusTC = (todoListID: string, taskID: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(changeTaskStatusAC(todoListID, taskID))
+    }
+}
+
+export const updateTaskTitleTC = (todoListID: string, taskID: string, title: string): any => {
+    return async (dispatch: Dispatch) => {
+        dispatch(updateTaskTitleAC(todoListID, taskID, title))
+    }
+}
