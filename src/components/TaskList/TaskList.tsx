@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {TaskType} from '../../App';
+import {TaskType} from '../../redux/reducers/task';
 import ButtonElement from '../Button/Button';
 import EditableInput from '../EditableInput/EditableInput';
 import Checkbox from '@mui/material/Checkbox';

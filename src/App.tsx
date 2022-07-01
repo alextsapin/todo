@@ -11,24 +11,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {AppStateType} from './redux/store';
 import './main.scss';
 import {addTodoListTC, changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from './redux/reducers/todo';
-import {filterType} from './redux/reducers/todo';
+import {TodoListType, filterType} from './redux/reducers/todo';
 import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/task';
+import {TaskBoxType} from './redux/reducers/task';
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
-export type TaskBoxType = {
-    [key: string]: Array<TaskType>
-}
-
-export type TodoListType = {
-    id: string
-    title: string
-    filter: string
-}
 
 const App = () => {
 

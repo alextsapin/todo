@@ -4,16 +4,13 @@ import {Dispatch} from 'redux';
 export const todoListID1 = v1();
 export const todoListID2 = v1();
 
-//type stateType2 = ReturnType<typeof initialState>
-type todoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: string
 }
 
 export type filterType = 'ALL' | 'ACTIVE' | 'COMPLETED';
-
-export type stateType = Array<todoListType>
 
 const initialState = [
     {id: todoListID1, title: 'What to learn:', filter: 'ALL'},
@@ -22,7 +19,7 @@ const initialState = [
 
 type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | changeTodoListFilterType;
 
-const todoReducer = (state = initialState, action: ACType)   => {
+const todoReducer = (state = initialState, action: ACType): Array<TodoListType>   => {
     switch(action.type) {
         case 'ADD_TODO_LIST': {
             return [...state, 

@@ -1,8 +1,17 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
 import {todoListID1, todoListID2} from './todo';
-import {addTodoListAC, deleteTodoListAC} from './todo';
 import {addTodoListType, deleteTodoListType} from './todo';
+
+export type TaskType = {
+    id: string
+    title: string
+    isDone: boolean
+}
+
+export type TaskBoxType = {
+    [key: string]: Array<TaskType>
+}
 
 const initialState = {
     [todoListID1]:[
@@ -23,7 +32,7 @@ const initialState = {
 
 type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType
 
-const taskReducer = (state = initialState, action: ACTypes)   => {
+const taskReducer = (state = initialState, action: ACTypes): TaskBoxType   => {
     switch(action.type) {   
         case 'ADD_TASK': {
             return {
