@@ -1,6 +1,5 @@
 import React from 'react';
 import TodoList from './components/TodoList/TodoList';
-import {v1} from 'uuid';
 import ButtonElement from './components/Button/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -9,12 +8,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import {useSelector, useDispatch} from 'react-redux';
 import {AppStateType} from './redux/store';
-import './main.scss';
 import {addTodoListTC, changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from './redux/reducers/todo';
 import {TodoListType, filterType} from './redux/reducers/todo';
 import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/task';
 import {TaskBoxType} from './redux/reducers/task';
-
+import './main.scss';
+import AddItemForm from './components/AddItemForm/AddItemForm';
 
 const App = () => {
 
@@ -23,34 +22,17 @@ const App = () => {
     const todoListBox = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
     const taskBox = useSelector<AppStateType, TaskBoxType>(state => state.task)
 
-    const [todoListTitle, setTodoListTitle] = React.useState('');
-
-    const [error, setError] = React.useState(false);
-
-    // Todo листы
-    function addTodoList() {
-        const trimmedTitle = todoListTitle.trim();
-        if(trimmedTitle) {
-            dispatch(addTodoListTC(trimmedTitle))
-            setTodoListTitle('')
-            setError(false)
-        } else {
-            setError(true)
-        }
-    }
-
-    function removeTodoList (id: string) {
+    // Todos
+    const removeTodoList = React.useCallback((id: string) => {
         dispatch(deleteTodoListTC(id))
-    }
+    }, [])
 
     function editTitleTodoList(id: string, newTitle: string) {
         dispatch(changeTodoListTitleTC(id, newTitle));
     }
 
     function changeFilter (todoListID: string, filter: filterType) {
-        //setTodoListBox(todoListBox.map(item => item.id === todoListID ? {...item, filter: filter} : item))
         dispatch(changeTodoListFilterTC(todoListID, filter));
-
     }
 
     // Tasks
@@ -62,12 +44,10 @@ const App = () => {
         dispatch(deleteTaskTC(todolistID, taskID));
     }
 
-    // Изменим статус задачи
     function changeStatus(todoListId: string, taskId: string) {
         dispatch(changeTaskStatusTC(todoListId, taskId))
     }
 
-    // Обновим задачу
     function updateTaskTitle(todoListId: string, taskId: string, newTitle: string) {
         dispatch(updateTaskTitleTC(todoListId, taskId, newTitle))
     }
@@ -109,30 +89,7 @@ const App = () => {
 
     return (
         <Container fixed>
-                <Grid container spacing={2}>
-                    <Grid item md={4}>
-                        <Paper className="taskBox" elevation={3}>
-                            <p className="taskBox__title">Add new todoList</p>
-
-                            <div className="formBox">
-                                <TextField 
-                                    value={todoListTitle} 
-                                    onChange={e => setTodoListTitle(e.currentTarget.value)}
-                                    size="small"
-                                    label="Add new todoList" 
-                                    error={error}
-                                />
-
-                                <ButtonElement 
-                                    title='ADD' 
-                                    variant='contained' 
-                                    callBack={addTodoList}
-                                    startIcon={<AddCircleIcon/>}
-                                />
-                            </div>
-                        </Paper>
-                    </Grid>
-                </Grid>
+                <AddItemForm/>
 
                 <Grid container spacing={2}>
                     {todoListJSX}
@@ -141,4 +98,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default App

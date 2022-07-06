@@ -1,5 +1,5 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React from 'react'
+import Button from '@mui/material/Button'
 
 type ButtonPropsType = {
     title: string
@@ -12,7 +12,7 @@ type ButtonPropsType = {
     startIcon?: any
 }
 
-const ButtonElement = (props: ButtonPropsType) => {
+const ButtonElement = React.memo((props: ButtonPropsType) => {
     const onClickHandler = () => {
         props.callBack()
     }
@@ -30,6 +30,6 @@ const ButtonElement = (props: ButtonPropsType) => {
         {props.title}
         </Button>
     )
-}
+})
 
-export default ButtonElement;
+export default ButtonElement
