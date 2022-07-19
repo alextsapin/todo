@@ -8,7 +8,10 @@ import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
+import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from '../../redux/reducers/todo';
+import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from '../../redux/reducers/task';
 import EditableInput from '../EditableInput/EditableInput';
+import {useDispatch} from 'react-redux';
 
 type TodoListPropsType = {
     title: string
@@ -16,36 +19,51 @@ type TodoListPropsType = {
     filter: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
-    addTask: (todoListID: string, title: string) => void
     changeFilter: (todoListId: string, filter: filterType) => void
     changeStatus: (todoListId: string, taskId: string) => void
-    removeTodoList: (todoListId: string) => void
     updateTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
     editTitleTodoList: (todoListId: string, newTitle: string) => void
 }
 
-const TodoList = (props: TodoListPropsType) => {
+const TodoList = React.memo((props: TodoListPropsType) => {
+    
+    const dispatch = useDispatch();
+
     const [title, setTitle] = React.useState('');
     const [error, setError] = React.useState(false);
     
-    const addTask = () => {
-        const trimmedTitle = title.trim();
+    const addTask = React.useCallback(() => {
+        let trimmedTitle = title.trim();
         if(trimmedTitle) {
-            props.addTask(props.todoListID, trimmedTitle);
+            dispatch(addTaskTC(props.todoListID, trimmedTitle))
             setError(false);
             setTitle('');
         } else {
             setError(true)
         }
-    }
+    }, [dispatch, props.todoListID, title])
 
-    function removeTodoList() {
-        props.removeTodoList(props.todoListID)
-    }
+    const deleteTodoList = React.useCallback(() => {
+        dispatch(deleteTodoListTC(props.todoListID))
+    }, [])
 
 
-    function editTitleTodoList(newTitle: string) {
+    const editTitleTodoList = React.useCallback((newTitle: string) => {
         props.editTitleTodoList(props.todoListID, newTitle)
+    }, [])
+
+    let tasksForTodoList = props.tasks
+    switch(props.filter) {
+        case 'ACTIVE':
+        tasksForTodoList = props.tasks.filter(t => t.isDone === false)
+        break;
+
+        case 'COMPLETED':
+        tasksForTodoList = props.tasks.filter(t => t.isDone === true)
+        break;
+
+        default:
+        tasksForTodoList = props.tasks
     }
 
     return (
@@ -56,7 +74,7 @@ const TodoList = (props: TodoListPropsType) => {
                     title='' 
                     variant='contained'
                     color="error"
-                    callBack={removeTodoList} 
+                    callBack={deleteTodoList} 
                     btnClass="taskBox__del"
                     startIcon={<DeleteIcon/>}
                 />
@@ -84,10 +102,9 @@ const TodoList = (props: TodoListPropsType) => {
                 </div>
                 
                 <TaskList 
-                    tasks={props.tasks} 
+                    tasks={tasksForTodoList} 
                     todoListID={props.todoListID} 
                     removeTask={props.removeTask} 
-                    addTask={props.addTask} 
                     changeStatus={props.changeStatus}
                     updateTaskTitle={props.updateTaskTitle}
                 />
@@ -120,6 +137,6 @@ const TodoList = (props: TodoListPropsType) => {
             </Paper>
         </Grid>
     )
-}
+})
 
 export default TodoList;

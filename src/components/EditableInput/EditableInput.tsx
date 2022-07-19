@@ -7,10 +7,9 @@ type EditableInputPropsType = {
     callBack: (newTitle: string) => void
 }
 
-const EditableInput = (props: EditableInputPropsType) => {
+const EditableInput = React.memo((props: EditableInputPropsType) => {
 
     const [edit, setEdit] = React.useState(false);
-
     const [newTitle, setNewTitle] = React.useState(props.title);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +30,6 @@ const EditableInput = (props: EditableInputPropsType) => {
         ? <TextField value={newTitle} onBlur={turnOffHandler} onChange={onChangeHandler} autoFocus size="small"/> 
         : <span className={props.css} onDoubleClick={turnOnHandler}>{props.title}</span>
     )
-}
+})
 
 export default EditableInput;

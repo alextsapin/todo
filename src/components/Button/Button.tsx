@@ -13,6 +13,7 @@ type ButtonPropsType = {
 }
 
 const ButtonElement = React.memo((props: ButtonPropsType) => {
+    
     const onClickHandler = () => {
         props.callBack()
     }

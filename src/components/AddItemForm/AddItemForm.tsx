@@ -1,6 +1,5 @@
 import React from 'react'
 import ButtonElement from '../Button/Button'
-import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
@@ -9,13 +8,13 @@ import {useSelector, useDispatch} from 'react-redux'
 import {addTodoListTC} from '../../redux/reducers/todo'
 
 const AddItemForm = React.memo(() => {
+    
     const [error, setError] = React.useState(false);
-
     const [todoListTitle, setTodoListTitle] = React.useState('')
 
     const dispatch = useDispatch()
 
-    function addTodoList() {
+    const addTodoList = React.useCallback(() => {
         const trimmedTitle = todoListTitle.trim();
         if(trimmedTitle) {
             dispatch(addTodoListTC(trimmedTitle))
@@ -24,7 +23,7 @@ const AddItemForm = React.memo(() => {
         } else {
             setError(true)
         }
-    }
+    }, [])
 
     return (
         <Grid container spacing={2}>

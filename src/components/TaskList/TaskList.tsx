@@ -8,20 +8,19 @@ type TaskListPropsType = {
     tasks: Array<TaskType>
     todoListID: string
     removeTask: (todoListID: string, id: string) => void
-    addTask: (todoListId: string, title: string) => void
     changeStatus: (todoListId: string, taskId: string) => void
     updateTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
 }
 
-const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoListID, updateTaskTitle}) => {
+const TaskList: FC<TaskListPropsType> = React.memo(({tasks, removeTask, changeStatus, todoListID, updateTaskTitle}) => {
 
-    const updateTaskTitleHandler = (taskId: string, newTitle: string) => {
+    const updateTaskTitleHandler = React.useCallback((taskId: string, newTitle: string) => {
         updateTaskTitle(todoListID, taskId, newTitle) 
-    }
+    }, [])
 
-    const changeStatusHandler = (taskId: string) => {
+    const changeStatusHandler = React.useCallback((taskId: string) => {
         changeStatus(todoListID, taskId); 
-    }
+    }, [])
 
     const taskJSXElements = tasks.map(t => {
         // Значение чекбокса onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}
@@ -35,6 +34,6 @@ const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoL
     })
     
     return <div>{taskJSXElements}</div>
-}
+})
 
 export default TaskList;
