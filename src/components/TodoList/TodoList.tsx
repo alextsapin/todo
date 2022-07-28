@@ -2,21 +2,22 @@ import React from 'react';
 import ButtonElement from '../Button/Button';
 import TaskList from '../TaskList/TaskList';
 import {TaskType} from '../../redux/reducers/task';
-import {filterType} from '../../redux/reducers/todo';
+import {filterType} from '../../redux/reducers/todos/todos';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
-import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from '../../redux/reducers/todo';
+import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from '../../redux/reducers/todos/todos';
 import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from '../../redux/reducers/task';
 import EditableInput from '../EditableInput/EditableInput';
 import {useDispatch} from 'react-redux';
 
+
 type TodoListPropsType = {
     title: string
     todoListID: string
-    filter: string
+    filter: filterType
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
     changeFilter: (todoListId: string, filter: filterType) => void
@@ -74,7 +75,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                     title='' 
                     variant='contained'
                     color="error"
-                    callBack={deleteTodoList} 
+                    callBack={() => dispatch(deleteTodoListTC(props.todoListID))} 
                     btnClass="taskBox__del"
                     startIcon={<DeleteIcon/>}
                 />
@@ -106,7 +107,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                     todoListID={props.todoListID} 
                     removeTask={props.removeTask} 
                     changeStatus={props.changeStatus}
-                    updateTaskTitle={props.updateTaskTitle}
+                    updateTask={props.updateTaskTitle}
                 />
 
                 <div className="filterBox">
@@ -114,7 +115,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                         title='All' 
                         variant='contained'
                         callBack={() => props.changeFilter(props.todoListID, 'ALL')} 
-                        disabled={props.filter === 'all' ? true : false}
+                        disabled={props.filter === 'ALL' ? true : false}
                         btnClass='filterBox__btn'
                     />
 
@@ -122,7 +123,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                         title='Active' 
                         variant='contained'
                         callBack={() => props.changeFilter(props.todoListID, 'ACTIVE')} 
-                        disabled={props.filter === 'active' ? true : false}
+                        disabled={props.filter === 'ACTIVE' ? true : false}
                         btnClass='filterBox__btn'
                     />
 
@@ -130,7 +131,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                         title='DONE' 
                         variant='contained'
                         callBack={() => props.changeFilter(props.todoListID, 'COMPLETED')} 
-                        disabled={props.filter === 'completed' ? true : false}
+                        disabled={props.filter === 'COMPLETED' ? true : false}
                         btnClass='filterBox__btn'
                     />
                 </div>

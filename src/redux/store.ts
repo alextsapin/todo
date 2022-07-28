@@ -3,7 +3,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
 // Reducers
-import todoReducer from './reducers/todo';
+import todoReducer from './reducers/todos/todos';
 import taskReducer from './reducers/task';
 
 // Объединим редьюсеры

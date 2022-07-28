@@ -4,19 +4,27 @@ import Grid from '@mui/material/Grid';
 import {useSelector, useDispatch} from 'react-redux';
 import TodoList from './components/TodoList/TodoList';
 import {AppStateType} from './redux/store';
-import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from './redux/reducers/todo';
-import {TodoListType, filterType} from './redux/reducers/todo';
-import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/task';
+import {changeTodoListFilterTC, changeTodoListTitleTC, getTodosTC} from './redux/reducers/todos/todos';
+import {TodoListType, filterType} from './redux/reducers/todos/todos';
+import {changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/task';
 import {TaskBoxType} from './redux/reducers/task';
 import AddItemForm from './components/AddItemForm/AddItemForm';
+import {todosAPI} from './api/api';
 import './main.scss';
 
 const App = React.memo(() => {
-
     const dispatch = useDispatch();
 
     const todoListBox = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
     const taskBox = useSelector<AppStateType, TaskBoxType>(state => state.task)
+
+    React.useEffect(() => {
+        dispatch(getTodosTC())
+    }, [])
+
+    React.useEffect(() => {
+        //dispatch(getTodosTC())
+    }, [todoListBox])
 
     // Todos
     const editTitleTodoList = React.useCallback((id: string, newTitle: string) => {

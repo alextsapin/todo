@@ -1,5 +1,6 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
+import {todosAPI} from '../../../api/api';
 
 export const todoListID1 = v1();
 export const todoListID2 = v1();
@@ -7,17 +8,14 @@ export const todoListID2 = v1();
 export type TodoListType = {
     id: string
     title: string
-    filter: string
+    filter: filterType
 }
 
 export type filterType = 'ALL' | 'ACTIVE' | 'COMPLETED';
 
-const initialState = [
-    {id: todoListID1, title: 'What to learn:', filter: 'ALL'},
-    {id: todoListID2, title: 'What to buy:', filter: 'ALL'},
-]
+const initialState: any = []
 
-type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | changeTodoListFilterType;
+type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | changeTodoListFilterType | setTodosType;
 
 const todoReducer = (state = initialState, action: ACType): Array<TodoListType>   => {
     switch(action.type) {
@@ -29,6 +27,14 @@ const todoReducer = (state = initialState, action: ACType): Array<TodoListType> 
                     filter: 'all'
                 }
             ]
+        }
+
+        case 'SET_TODOS': {
+            return action.data.map((item: any)  => {
+                return {
+                    ...item, filter: 'ALL'
+                }
+            })
         }
         
         case 'DELETE_TODO_LIST': {
@@ -42,7 +48,7 @@ const todoReducer = (state = initialState, action: ACType): Array<TodoListType> 
         case 'CHANGE_TODO_LIST_FILTER': {
             return [...state].map(item => item.id === action.id ? {...item, filter: action.filter} : item)
         }
-        
+
         default: {
             return state
         }
@@ -69,10 +75,10 @@ export type addTodoListType = {
     title: string
 }
 
-export const addTodoListAC = (title: string) => {
+export const addTodoListAC = (title: string, id: string) => {
     return {
         type: 'ADD_TODO_LIST' as const,
-        id: v1(),
+        id,
         title
     }
 }
@@ -105,16 +111,33 @@ export const changeTodoListFilterAC = (id: string, filter: filterType) => {
     }
 }
 
+export type setTodosType = {
+    type: 'SET_TODOS'
+    data: any
+}
+
+export const setTodosAC = (data: Array<TodoListType>) => {
+    return {
+        type: 'SET_TODOS' as const,
+        data
+    }
+}
+
 // Thunk creators
 export const addTodoListTC = (title: string): any => {
     return async (dispatch: Dispatch) => {
-        dispatch(addTodoListAC(title))
+        todosAPI.createTodo(title).then((response) => {
+            console.log(response)
+            //dispatch(addTodoListAC(title, response))
+        })
     }
 }
 
 export const deleteTodoListTC = (id: string): any => {
     return async (dispatch: Dispatch) => {
-        dispatch(deleteTodoListAC(id))
+        todosAPI.deleteTodo(id).then(() =>{
+            dispatch(deleteTodoListAC(id))
+        })
     }
 }
 
@@ -127,5 +150,13 @@ export const changeTodoListTitleTC = (id: string, title: string): any => {
 export const changeTodoListFilterTC = (id: string, filter: filterType): any => {
     return async (dispatch: Dispatch) => {
         dispatch(changeTodoListFilterAC(id, filter))
+    }
+}
+
+export const getTodosTC = (): any => {
+    return async (dispatch: Dispatch) => {
+        todosAPI.getTodos().then((response) => {
+            dispatch(setTodosAC(response))
+        })
     }
 }

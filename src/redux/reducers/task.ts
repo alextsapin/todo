@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
-import {todoListID1, todoListID2} from './todo';
-import {addTodoListType, deleteTodoListType} from './todo';
+import {setTodosAC, setTodosType, todoListID1, todoListID2} from './todos/todos';
+import {addTodoListType, deleteTodoListType} from './todos/todos';
 
 export type TaskType = {
     id: string
@@ -30,10 +30,19 @@ const initialState = {
     ]
 }
 
-type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType
+type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType | setTodosType
 
 const taskReducer = (state = initialState, action: ACTypes): TaskBoxType   => {
     switch(action.type) {   
+
+        case 'SET_TODOS': {
+            const copy = {...state}
+            action.data.forEach((item: any) => {
+                copy[item.id] = []
+            })
+            return copy
+        }
+
         case 'ADD_TASK': {
             return {
                 ...state, [action.todoListID]: [...state[action.todoListID], {

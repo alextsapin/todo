@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import TextField from '@mui/material/TextField'
 import {useSelector, useDispatch} from 'react-redux'
-import {addTodoListTC} from '../../redux/reducers/todo'
+import {addTodoListTC} from '../../redux/reducers/todos/todos'
 
 const AddItemForm = React.memo(() => {
     
@@ -23,7 +23,7 @@ const AddItemForm = React.memo(() => {
         } else {
             setError(true)
         }
-    }, [])
+    }, [todoListTitle])
 
     return (
         <Grid container spacing={2}>
