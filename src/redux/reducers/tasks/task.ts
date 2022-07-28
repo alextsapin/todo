@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
-import {setTodosAC, setTodosType, todoListID1, todoListID2} from './todos/todos';
-import {addTodoListType, deleteTodoListType} from './todos/todos';
+import {setTodosAC, todoListID1, todoListID2} from '../todos/todos';
+import {addTodoListType, deleteTodoListType, setTodosType} from '../todos/types';
 
 export type TaskType = {
     id: string

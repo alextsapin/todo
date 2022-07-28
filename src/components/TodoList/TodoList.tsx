@@ -1,18 +1,17 @@
 import React from 'react';
 import ButtonElement from '../Button/Button';
 import TaskList from '../TaskList/TaskList';
-import {TaskType} from '../../redux/reducers/task';
-import {filterType} from '../../redux/reducers/todos/todos';
+import {TaskType} from '../../redux/reducers/tasks/task';
+import {filterType} from '../../redux/reducers/todos/types';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from '../../redux/reducers/todos/todos';
-import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from '../../redux/reducers/task';
+import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from '../../redux/reducers/tasks/task';
 import EditableInput from '../EditableInput/EditableInput';
 import {useDispatch} from 'react-redux';
-
 
 type TodoListPropsType = {
     title: string
@@ -44,11 +43,6 @@ const TodoList = React.memo((props: TodoListPropsType) => {
         }
     }, [dispatch, props.todoListID, title])
 
-    const deleteTodoList = React.useCallback(() => {
-        dispatch(deleteTodoListTC(props.todoListID))
-    }, [])
-
-
     const editTitleTodoList = React.useCallback((newTitle: string) => {
         props.editTitleTodoList(props.todoListID, newTitle)
     }, [])
@@ -66,6 +60,10 @@ const TodoList = React.memo((props: TodoListPropsType) => {
         default:
         tasksForTodoList = props.tasks
     }
+
+    React.useEffect(() => {
+        //dispatch(getTasksTC(id))
+    }, [])
 
     return (
         <Grid item md={4}>

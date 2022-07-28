@@ -2,7 +2,7 @@ import taskReducer from './task';
 import {v1} from 'uuid';
 
 import {addTaskAC, deleteTaskAC, changeTaskStatusAC} from './task';
-import {addTodoListAC, deleteTodoListAC} from './todos/todos';
+import {addTodoListAC, deleteTodoListAC} from '../todos/todos';
 
     let id1: string
     let id2: string

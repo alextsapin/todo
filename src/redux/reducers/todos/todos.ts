@@ -1,17 +1,10 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
 import {todosAPI} from '../../../api/api';
+import {filterType, TodoListType, deleteTodoListType, addTodoListType, changeTodoListTitleType, changeTodoListFilterType, setTodosType} from './types'
 
 export const todoListID1 = v1();
 export const todoListID2 = v1();
-
-export type TodoListType = {
-    id: string
-    title: string
-    filter: filterType
-}
-
-export type filterType = 'ALL' | 'ACTIVE' | 'COMPLETED';
 
 const initialState: any = []
 
@@ -19,6 +12,7 @@ type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | c
 
 const todoReducer = (state = initialState, action: ACType): Array<TodoListType>   => {
     switch(action.type) {
+
         case 'ADD_TODO_LIST': {
             return [...state, 
                 {
@@ -57,22 +51,12 @@ const todoReducer = (state = initialState, action: ACType): Array<TodoListType> 
 
 export default todoReducer;
 
-export type deleteTodoListType = {
-    type: 'DELETE_TODO_LIST'
-    id: string
-}
 
 export const deleteTodoListAC = (id: string) => {
     return {
         type: 'DELETE_TODO_LIST' as const,
         id
     }
-}
-
-export type addTodoListType = {
-    type: 'ADD_TODO_LIST'
-    id: string
-    title: string
 }
 
 export const addTodoListAC = (title: string, id: string) => {
@@ -83,12 +67,6 @@ export const addTodoListAC = (title: string, id: string) => {
     }
 }
 
-type changeTodoListTitleType = {
-    type: 'CHANGE_TODO_LIST_TITLE'
-    id: string
-    title: string
-}
-
 export const changeTodoListTitleAC = (id: string, title: string) => {
     return {
         type: 'CHANGE_TODO_LIST_TITLE' as const,
@@ -97,23 +75,12 @@ export const changeTodoListTitleAC = (id: string, title: string) => {
     }
 }
 
-type changeTodoListFilterType = {
-    type: 'CHANGE_TODO_LIST_FILTER'
-    id: string
-    filter: filterType
-}
-
 export const changeTodoListFilterAC = (id: string, filter: filterType) => {
     return {
         type: 'CHANGE_TODO_LIST_FILTER' as const,
         id,
         filter
     }
-}
-
-export type setTodosType = {
-    type: 'SET_TODOS'
-    data: any
 }
 
 export const setTodosAC = (data: Array<TodoListType>) => {
@@ -128,7 +95,7 @@ export const addTodoListTC = (title: string): any => {
     return async (dispatch: Dispatch) => {
         todosAPI.createTodo(title).then((response) => {
             console.log(response)
-            //dispatch(addTodoListAC(title, response))
+            dispatch(addTodoListAC(title, response.data.data.item.id))
         })
     }
 }

@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 
 // Reducers
 import todoReducer from './reducers/todos/todos';
-import taskReducer from './reducers/task';
+import taskReducer from './reducers/tasks/task';
 
 // Объединим редьюсеры
 const rootReducer = combineReducers({
