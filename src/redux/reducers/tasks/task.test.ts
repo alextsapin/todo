@@ -4,15 +4,19 @@ import {v1} from 'uuid';
 import {addTaskAC, deleteTaskAC, changeTaskStatusAC} from './task';
 import {addTodoListAC, deleteTodoListAC} from '../todos/todos';
 
-    let id1: string
-    let id2: string
-    let idTask: string
+let id1: string
+let id2: string
+let newId: string
 
-    let startState: any
+let idTask: string
+
+let startState: any
 
 beforeEach(() => {
    id1 = v1();
    id2 = v1();
+   newId = v1();
+
    idTask = v1();
 
    startState = {
@@ -25,7 +29,7 @@ beforeEach(() => {
             {id: v1(), title: "MSI GTX 3060", isDone: true}
         ]
     }
-});
+})
 
 // ADD
 test('Correct task should be added', () => { 
@@ -57,15 +61,15 @@ test('Correct task title updated', () => {
 
 // Add new array in task array
 test('New array should be added when new todoList is added', () => { 
-    //const endState = taskReducer(startState, addTodoListAC('New title'));
-    //const keys = Object.keys(endState);
+    const endState = taskReducer(startState, addTodoListAC('New title', newId));
+    const keys = Object.keys(endState);
 
-    //const newKey = keys.find(key => key !== id1 && key !== id2)
-    //if(!newKey) {
-       // throw Error('Error')
-    //}
-    //expect(keys.length).toBe(3)
-    //expect(endState[newKey]).toEqual([])
+    const newKey = keys.find(key => key !== id1 && key !== id2)
+    if(!newKey) {
+       throw Error('Error')
+    }
+    expect(keys.length).toBe(3)
+    expect(endState[newKey]).toEqual([])
 });
 
  // Delete array in task array

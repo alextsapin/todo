@@ -74,6 +74,7 @@ export const tasksAPI = {
             return response.data; 
         })
     },
+    
     deleteTask(todoId: string, taskId: string) {
         return instance.delete(`todo-lists/${todoId}/tasks/${taskId}`)
     }
