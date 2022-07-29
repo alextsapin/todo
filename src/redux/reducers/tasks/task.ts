@@ -1,7 +1,8 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
-import {setTodosAC, todoListID1, todoListID2} from '../todos/todos';
+import {setTodosAC, todoListID1} from '../todos/todos';
 import {addTodoListType, deleteTodoListType, setTodosType} from '../todos/types';
+import {taskType, todoType} from '../../../api/api'
 
 export type TaskType = {
     id: string
@@ -9,35 +10,20 @@ export type TaskType = {
     isDone: boolean
 }
 
-export type TaskBoxType = {
-    [key: string]: Array<TaskType>
+export type stateTaskType = {
+    [key: string]: Array<taskType>
 }
 
-const initialState = {
-    [todoListID1]:[
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-    ],
-    [todoListID2]:[
-        {id: v1(), title: "Ryzen 7 5800X", isDone: true},
-        {id: v1(), title: "MSI GTX 3060", isDone: true},
-        {id: v1(), title: "GINZZU", isDone: false},
-        {id: v1(), title: "Black Fury 16GB", isDone: false},
-        {id: v1(), title: "ASUS ROG STRIX B550-F", isDone: false}
-    ]
-}
+const initialState: stateTaskType = {}
 
 type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType | setTodosType
 
-const taskReducer = (state = initialState, action: ACTypes): TaskBoxType   => {
+const taskReducer = (state = initialState, action: ACTypes): stateTaskType   => {
     switch(action.type) {   
 
         case 'SET_TODOS': {
             const copy = {...state}
-            action.data.forEach((item: any) => {
+            action.data.forEach((item: todoType) => {
                 copy[item.id] = []
             })
             return copy
@@ -48,7 +34,7 @@ const taskReducer = (state = initialState, action: ACTypes): TaskBoxType   => {
                 ...state, [action.todoListID]: [...state[action.todoListID], {
                     id: v1(),
                     title: action.title,
-                    isDone: false
+                    completed: false
                 }]
             }
         }
@@ -61,7 +47,7 @@ const taskReducer = (state = initialState, action: ACTypes): TaskBoxType   => {
 
         case 'CHANGE_TASK_STATUS': {
             return {
-                ...state, [action.todoListID]: state[action.todoListID].map(item => item.id === action.taskID ? {...item, isDone: !item.isDone}: item)
+                ...state, [action.todoListID]: state[action.todoListID].map(item => item.id === action.taskID ? {...item, isDone: !item.completed}: item)
             }
         }
 

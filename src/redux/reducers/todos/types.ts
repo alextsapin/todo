@@ -1,8 +1,7 @@
 export type filterType = 'ALL' | 'ACTIVE' | 'COMPLETED';
+import {todoType} from '../../../api/api'
 
-export type TodoListType = {
-    id: string
-    title: string
+export type todoDomainType = todoType & {
     filter: filterType
 }
 

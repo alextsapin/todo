@@ -1,7 +1,7 @@
 import React from 'react';
 import ButtonElement from '../Button/Button';
 import TaskList from '../TaskList/TaskList';
-import {TaskType} from '../../redux/reducers/tasks/task';
+import {taskType} from '../../api/api';
 import {filterType} from '../../redux/reducers/todos/types';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -17,7 +17,7 @@ type TodoListPropsType = {
     title: string
     todoListID: string
     filter: filterType
-    tasks: Array<TaskType>
+    tasks: Array<taskType>
     removeTask: (todolistID: string, id: string) => void
     changeFilter: (todoListId: string, filter: filterType) => void
     changeStatus: (todoListId: string, taskId: string) => void
@@ -50,11 +50,11 @@ const TodoList = React.memo((props: TodoListPropsType) => {
     let tasksForTodoList = props.tasks
     switch(props.filter) {
         case 'ACTIVE':
-        tasksForTodoList = props.tasks.filter(t => t.isDone === false)
+        tasksForTodoList = props.tasks.filter(t => t.completed === false)
         break;
 
         case 'COMPLETED':
-        tasksForTodoList = props.tasks.filter(t => t.isDone === true)
+        tasksForTodoList = props.tasks.filter(t => t.completed === true)
         break;
 
         default:

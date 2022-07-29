@@ -5,26 +5,21 @@ import {useSelector, useDispatch} from 'react-redux';
 import TodoList from './components/TodoList/TodoList';
 import {AppStateType} from './redux/store';
 import {changeTodoListFilterTC, changeTodoListTitleTC, getTodosTC} from './redux/reducers/todos/todos';
-import {TodoListType, filterType} from './redux/reducers/todos/types';
+import {todoDomainType, filterType} from './redux/reducers/todos/types';
 import {changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from './redux/reducers/tasks/task';
-import {TaskBoxType} from './redux/reducers/tasks/task';
+import {stateTaskType} from './redux/reducers/tasks/task';
 import AddItemForm from './components/AddItemForm/AddItemForm';
-import {todosAPI} from './api/api';
 import './main.scss';
 
 const App = React.memo(() => {
     const dispatch = useDispatch();
 
-    const todoListBox = useSelector<AppStateType, Array<TodoListType>>(state => state.todo)
-    const taskBox = useSelector<AppStateType, TaskBoxType>(state => state.task)
+    const todoListBox = useSelector<AppStateType, Array<todoDomainType>>(state => state.todo)
+    const taskBox = useSelector<AppStateType, stateTaskType>(state => state.task)
 
     React.useEffect(() => {
         dispatch(getTodosTC())
     }, [])
-
-    React.useEffect(() => {
-        //dispatch(getTodosTC())
-    }, [todoListBox])
 
     // Todos
     const editTitleTodoList = React.useCallback((id: string, newTitle: string) => {

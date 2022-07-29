@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import {TaskType} from '../../redux/reducers/tasks/task';
+import {taskType} from '../../api/api';
 import ButtonElement from '../Button/Button';
 import EditableInput from '../EditableInput/EditableInput';
 import Checkbox from '@mui/material/Checkbox';
 
 type TaskListPropsType = {
-    tasks: Array<TaskType>
+    tasks: Array<taskType>
     todoListID: string
     removeTask: (todoListID: string, id: string) => void
     changeStatus: (todoListId: string, taskId: string, isDone: boolean) => void
@@ -24,8 +24,8 @@ const TaskList: FC<TaskListPropsType> = ({tasks, removeTask, changeStatus, todoL
 
     const taskJSXElements = tasks.map(t => {
         return (
-            <div key={t.id} className={t.isDone ? 'task task_completed': 'task'}>
-                <Checkbox checked={t.isDone} onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>    
+            <div key={t.id} className={t.completed ? 'task task_completed': 'task'}>
+                <Checkbox checked={t.completed} onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>    
                 <EditableInput title={t.title} callBack={(newTitle: string) => updateTaskHandler(t.id, newTitle)}/>
                 <ButtonElement title='❌' variant='text' callBack={() => removeTask(todoListID, t.id)} btnClass='righted'/>
             </div>

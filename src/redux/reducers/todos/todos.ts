@@ -1,17 +1,24 @@
 import {v1} from 'uuid';
 import {Dispatch} from 'redux';
 import {todosAPI} from '../../../api/api';
-import {filterType, TodoListType, deleteTodoListType, addTodoListType, changeTodoListTitleType, changeTodoListFilterType, setTodosType} from './types'
+import {filterType, todoDomainType, deleteTodoListType, addTodoListType, changeTodoListTitleType, changeTodoListFilterType, setTodosType} from './types'
 
 export const todoListID1 = v1();
-export const todoListID2 = v1();
 
 const initialState: any = []
 
 type ACType = deleteTodoListType | addTodoListType | changeTodoListTitleType | changeTodoListFilterType | setTodosType;
 
-const todoReducer = (state = initialState, action: ACType): Array<TodoListType>   => {
+const todoReducer = (state = initialState, action: ACType): Array<todoDomainType>   => {
     switch(action.type) {
+
+        case 'SET_TODOS': {
+            return action.data.map((item: any)  => {
+                return {
+                    ...item, filter: 'ALL'
+                }
+            })
+        }
 
         case 'ADD_TODO_LIST': {
             return [...state, 
@@ -23,14 +30,6 @@ const todoReducer = (state = initialState, action: ACType): Array<TodoListType> 
             ]
         }
 
-        case 'SET_TODOS': {
-            return action.data.map((item: any)  => {
-                return {
-                    ...item, filter: 'ALL'
-                }
-            })
-        }
-        
         case 'DELETE_TODO_LIST': {
             return [...state].filter(item => item.id !== action.id)
         }
@@ -83,7 +82,7 @@ export const changeTodoListFilterAC = (id: string, filter: filterType) => {
     }
 }
 
-export const setTodosAC = (data: Array<TodoListType>) => {
+export const setTodosAC = (data: Array<todoDomainType>) => {
     return {
         type: 'SET_TODOS' as const,
         data
