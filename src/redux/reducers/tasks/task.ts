@@ -2,7 +2,8 @@ import {v1} from 'uuid';
 import {Dispatch} from 'redux';
 import {setTodosAC, todoListID1} from '../todos/todos';
 import {addTodoListType, deleteTodoListType, setTodosType} from '../todos/types';
-import {taskType, todoType} from '../../../api/api'
+import {taskType, todoType} from '../../../api/api';
+import {tasksAPI} from '../../../api/api';
 
 export type TaskType = {
     id: string
@@ -135,6 +136,14 @@ export const updateTaskTitleAC = (todoListID: string, taskID: string, title: str
     }
 }
 
+export const setTasksAC = (id: string, taskBox: taskType[]) => {
+    return {
+        type: 'SET_TASKS',
+        id,
+        taskBox
+    }
+}
+
 // Thunk creators
 export const addTaskTC = (todoListID: string, title: string): any => {
     return async (dispatch: Dispatch) => {
@@ -157,5 +166,13 @@ export const changeTaskStatusTC = (todoListID: string, taskID: string): any => {
 export const updateTaskTitleTC = (todoListID: string, taskID: string, title: string): any => {
     return async (dispatch: Dispatch) => {
         dispatch(updateTaskTitleAC(todoListID, taskID, title))
+    }
+}
+
+export const getTasksTC = (todoListID: string): any => {
+    return async (dispatch: Dispatch) => {
+        tasksAPI.getTasks(todoListID).then((response) => {
+            dispatch(setTasksAC(todoListID, response))
+        })
     }
 }

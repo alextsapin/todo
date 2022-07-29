@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import {changeTodoListFilterTC, changeTodoListTitleTC, deleteTodoListTC} from '../../redux/reducers/todos/todos';
-import {addTaskTC, changeTaskStatusTC, deleteTaskTC, updateTaskTitleTC} from '../../redux/reducers/tasks/task';
+import {addTaskTC, changeTaskStatusTC, deleteTaskTC, getTasksTC, updateTaskTitleTC} from '../../redux/reducers/tasks/task';
 import EditableInput from '../EditableInput/EditableInput';
 import {useDispatch} from 'react-redux';
 
@@ -62,7 +62,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
     }
 
     React.useEffect(() => {
-        //dispatch(getTasksTC(id))
+        dispatch(getTasksTC(props.todoListID))
     }, [])
 
     return (

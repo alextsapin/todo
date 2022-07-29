@@ -44,7 +44,7 @@ type taskResponse = {
 export const todosAPI = {
     getTodos() {
         return instance.get<any[]>(`todo-lists`).then((response) => {
-            console.log(response.data)
+            //console.log(response.data)
             return response.data; 
         })
     },
@@ -71,7 +71,8 @@ export const todosAPI = {
 export const tasksAPI = {
     getTasks(todoListId: string) {
         return instance.get<taskResponse>(`todo-lists/${todoListId}/tasks`).then((response) => {
-            return response.data; 
+            //console.log(response.data)
+            return response.data.items; 
         })
     },
     
