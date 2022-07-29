@@ -17,7 +17,7 @@ export type stateTaskType = {
 
 const initialState: stateTaskType = {}
 
-type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType | setTodosType
+type ACTypes = addTaskType | deleteTaskType | changeTaskStatusType | updateTaskSTitleType | addTodoListType | deleteTodoListType | setTodosType | setTasksACType
 
 const taskReducer = (state = initialState, action: ACTypes): stateTaskType   => {
     switch(action.type) {   
@@ -27,6 +27,12 @@ const taskReducer = (state = initialState, action: ACTypes): stateTaskType   => 
             action.data.forEach((item: todoType) => {
                 copy[item.id] = []
             })
+            return copy
+        }
+
+        case 'SET_TASKS': {
+            const copy = {...state}
+            copy[action.id] = action.taskBox
             return copy
         }
 
@@ -136,9 +142,15 @@ export const updateTaskTitleAC = (todoListID: string, taskID: string, title: str
     }
 }
 
+type setTasksACType = {
+    type: 'SET_TASKS'
+    id: number
+    taskBox: taskType[]
+}
+
 export const setTasksAC = (id: string, taskBox: taskType[]) => {
     return {
-        type: 'SET_TASKS',
+        type: 'SET_TASKS' as const,
         id,
         taskBox
     }
@@ -147,7 +159,10 @@ export const setTasksAC = (id: string, taskBox: taskType[]) => {
 // Thunk creators
 export const addTaskTC = (todoListID: string, title: string): any => {
     return async (dispatch: Dispatch) => {
-        dispatch(addTaskAC(todoListID, title))
+        tasksAPI.addTask(todoListID, title).then((response) => {
+            dispatch(addTaskAC(response.data.item.todoListId, response.data.item.title))
+        })
+        
     }
 }
 

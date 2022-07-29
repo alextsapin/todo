@@ -17,6 +17,8 @@ const App = React.memo(() => {
     const todoListBox = useSelector<AppStateType, Array<todoDomainType>>(state => state.todo)
     const taskBox = useSelector<AppStateType, stateTaskType>(state => state.task)
 
+    console.log(taskBox)
+
     React.useEffect(() => {
         dispatch(getTodosTC())
     }, [])

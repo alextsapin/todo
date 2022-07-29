@@ -44,7 +44,6 @@ type taskResponse = {
 export const todosAPI = {
     getTodos() {
         return instance.get<any[]>(`todo-lists`).then((response) => {
-            //console.log(response.data)
             return response.data; 
         })
     },
@@ -71,11 +70,17 @@ export const todosAPI = {
 export const tasksAPI = {
     getTasks(todoListId: string) {
         return instance.get<taskResponse>(`todo-lists/${todoListId}/tasks`).then((response) => {
-            //console.log(response.data)
             return response.data.items; 
         })
     },
-    
+
+    addTask(todoListId: string, title: string) {
+        return instance.post(`todo-lists/${todoListId}/tasks`, {title: title}).then((response) => {
+            console.log(response.data)
+            return response.data
+        })
+    },
+
     deleteTask(todoId: string, taskId: string) {
         return instance.delete(`todo-lists/${todoId}/tasks/${taskId}`)
     }
