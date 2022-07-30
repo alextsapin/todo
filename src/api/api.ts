@@ -82,6 +82,8 @@ export const tasksAPI = {
     },
 
     deleteTask(todoId: string, taskId: string) {
-        return instance.delete(`todo-lists/${todoId}/tasks/${taskId}`)
+        return instance.delete<number>(`todo-lists/${todoId}/tasks/${taskId}`).then((response) => {
+            return response.status
+        })
     }
 }

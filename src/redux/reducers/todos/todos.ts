@@ -90,6 +90,14 @@ export const setTodosAC = (data: Array<todoDomainType>) => {
 }
 
 // Thunk creators
+export const getTodosTC = (): any => {
+    return async (dispatch: Dispatch) => {
+        todosAPI.getTodos().then((response) => {
+            dispatch(setTodosAC(response))
+        })
+    }
+}
+
 export const addTodoListTC = (title: string): any => {
     return async (dispatch: Dispatch) => {
         todosAPI.createTodo(title).then((response) => {
@@ -116,13 +124,5 @@ export const changeTodoListTitleTC = (id: string, title: string): any => {
 export const changeTodoListFilterTC = (id: string, filter: filterType): any => {
     return async (dispatch: Dispatch) => {
         dispatch(changeTodoListFilterAC(id, filter))
-    }
-}
-
-export const getTodosTC = (): any => {
-    return async (dispatch: Dispatch) => {
-        todosAPI.getTodos().then((response) => {
-            dispatch(setTodosAC(response))
-        })
     }
 }

@@ -168,7 +168,13 @@ export const addTaskTC = (todoListID: string, title: string): any => {
 
 export const deleteTaskTC = (todoListID: string, taskID: string): any => {
     return async (dispatch: Dispatch) => {
-        dispatch(deleteTaskAC(todoListID, taskID))
+        tasksAPI.deleteTask(todoListID, taskID).then((response) => {
+            if(response === 200) {
+                dispatch(deleteTaskAC(todoListID, taskID))
+            } else {
+                throw new Error("Error delete task");
+            }
+        })
     }
 }
 
